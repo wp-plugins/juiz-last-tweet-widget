@@ -42,28 +42,28 @@ In your site :
 
 
 -------------
-Français
+FranÃ§ais
 ----
 
-Ajoute un widget à votre site pour lister vos derniers tweets, sans JavaScript !
+Ajoute un widget Ã  votre site pour lister vos derniers tweets, sans JavaScript !
 
-Ce widget de sidebar vous offre la possibilité d'afficher vos derniers tweets (LE dernier par défaut) dans votre site WordPress.
-L'avantage de ce plugin est l'absence de JavaScript pour charger les tweets depuis Twitter : un très bon point pour la vitesse de vos pages.
-Un autre avantage est la possibilie d'utiliser un système de cache avec une durée ajustable.
+Ce widget de sidebar vous offre la possibilitÃ© d'afficher vos derniers tweets (LE dernier par dÃ©faut) dans votre site WordPress.
+L'avantage de ce plugin est l'absence de JavaScript pour charger les tweets depuis Twitter : un trÃ¨s bon point pour la vitesse de vos pages.
+Un autre avantage est la possibilie d'utiliser un systÃ¨me de cache avec une durÃ©e ajustable.
 
-**Fonctionnalités**
+**FonctionnalitÃ©s**
 
 Dans l'administration :
 
-* Facile à installer.
-* Panneau facile à configurer (Apparence -> Widgets).
-* Styles par défaut personnalisable (peuvent être simplement désactivé ou écrasés)
-* Durée du cache ajustable
+* Facile Ã  installer.
+* Panneau facile Ã  configurer (Apparence -> Widgets).
+* Styles par dÃ©faut personnalisable (peuvent Ãªtre simplement dÃ©sactivÃ© ou Ã©crasÃ©s)
+* DurÃ©e du cache ajustable
 
 In your site :
 
-* Styles par défaut sobres et classes (CSS)
-* Affiche les liens (avec des classes spéciales) pour les hastags, utilisateurs, et liens classiques
+* Styles par dÃ©faut sobres et classes (CSS)
+* Affiche les liens (avec des classes spÃ©ciales) pour les hastags, utilisateurs, et liens classiques
 * Affiche un lien vers le statut et le compte twitter
 * Affiche la source du tweet (web, Tweetdeck, etc.) quand c'est possible
 
@@ -73,7 +73,7 @@ In your site :
 * Anglais
 * Allemand
 * Espagnol
-* Français
+* FranÃ§ais
 
 == Installation ==
 
