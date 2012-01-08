@@ -105,9 +105,16 @@ If this link show your 2 last tweets, it's the fault of my script, so contact me
 == Changelog ==
 
 = 1.0.0 =
+* Bug fix for initial cache
+* Bug fix for empty pseudo
+
+= 1.0.0 beta =
 * Initial Release, beta.
 
 == Upgrade Notice ==
 
 = 1.0.0 =
-New version...
+No need to upgrade if your tweets are displayed.
+
+= 1.0.0 beta =
+New version in test...

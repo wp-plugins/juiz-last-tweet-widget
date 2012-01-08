@@ -4,12 +4,15 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets)
  * Author: Geoffrey Crofte
- * Version: 1.0.0 beta
+ * Version: 1.0.0
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
 
 /**
+ * = 1.0.0 =
+ * Fix first version of cache
+ *
  * = 1.0.0 beta =
  * Initial Release
  */
@@ -36,13 +39,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 define('JUIZ_LTW_VERSION', '1.0.0');
+define('JUIZ_LTW_PLUGINBASENAME', dirname(plugin_basename(__FILE__)));
+define('JUIZ_LTW_PLUGINPATH', PLUGINDIR . '/' . JUIZ_LTW_PLUGINBASENAME);
+define('JUIZ_LTW_CACHEFILE',  JUIZ_LTW_PLUGINPATH . '/cache/index.html');
 
 class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 	function Juiz_Last_Tweet_Widget() {
 	
 		if(function_exists('load_plugin_textdomain')) {
-			load_plugin_textdomain('juiz_ltw', PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)) . '/languages', dirname(plugin_basename(__FILE__)) . '/languages');
+			load_plugin_textdomain('juiz_ltw', JUIZ_LTW_PLUGINPATH . '/languages', JUIZ_LTW_PLUGINBASENAME . '/languages');
 		}
 
 		$widget_ops = array(
@@ -61,7 +67,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			'juiz_last_tweet_title' => '',
 			'juiz_last_tweet_username' => '',
 			'juiz_last_tweet_no_tweets' => '1',
-			'juiz_last_tweet_cache_duration' => 1800,
+			'juiz_last_tweet_cache_duration' => 0,
 			'juiz_last_tweet_default_css' => true
 		));
 		
@@ -81,7 +87,6 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			<p>
 				<input id="' . $this->get_field_id('juiz_last_tweet_title') . '" name="' . $this->get_field_name('juiz_last_tweet_title') . '" type="text" value="' . $instance['juiz_last_tweet_title'] . '" />
 			</p>
-			<p style="clear:both;"></p>
 		';
 
 		// Settings
@@ -98,10 +103,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			</p>
 			<p>
 				<label>' . __('Duration of cache', 'juiz_ltw') . '<br />
-				<input style="margin-left: 1em;" id="' . $this->get_field_id('juiz_last_tweet_cache_duration') . '" name="' . $this->get_field_name('juiz_last_tweet_cache_duration') . '" type="text" size="10" value="' . $instance['juiz_last_tweet_cache_duration'] . '" /> '.__('Seconds', 'juiz_ltw').' <abbr title="' . __('A big number save your page speed. Try to use the delay between each tweet you make. (default is half hour : 1800 s)', 'juiz_ltw') . '">(?)</abbr></label>
+				<input style="margin-left: 1em; text-align:right;" id="' . $this->get_field_id('juiz_last_tweet_cache_duration') . '" name="' . $this->get_field_name('juiz_last_tweet_cache_duration') . '" type="text" size="10" value="' . $instance['juiz_last_tweet_cache_duration'] . '" /> '.__('Seconds', 'juiz_ltw').' <abbr title="' . __('A big number save your page speed. Try to use the delay between each tweet you make. (e.g. 1800 s = 30 min)', 'juiz_ltw') . '">(?)</abbr></label>
 			</p>
-			
-			<p style="clear:both;"></p>
 		';
 		
 		// Default & Own CSS
@@ -116,9 +119,6 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				<label for="' . $this->get_field_id('juiz-ltw-own-css') . '" style="display:inline-block;">' . __('Your own CSS', 'juiz_ltw') . ':  <abbr title="' . __('Write your CSS here to replace or overwrite the default CSS', 'juiz_ltw') . '">(?)</abbr></label>
 				<textarea id="' . $this->get_field_id('juiz-ltw-own-css') . '" rows="7" cols="30" name="' . $this->get_field_name('juiz-ltw-own-css') . '">' . $instance['juiz-ltw-own-css'] . '</textarea>
 			</p>
-		
-			<p style="clear:both;"></p>
-			<p style="clear:both;"></p>
 		';
 		
 		echo $jzoutput;
@@ -132,7 +132,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			'juiz_last_tweet_title' => '',
 			'juiz_last_tweet_username' => '',
 			'juiz_last_tweet_no_tweets' => '1',
-			'juiz_last_tweet_cache_duration' => 1800,
+			'juiz_last_tweet_cache_duration' => 0,
 			'juiz_last_tweet_default_css' => true
 		));
 
@@ -143,8 +143,6 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		$instance['juiz_last_tweet_cache_duration'] = strip_tags($new_instance['juiz_last_tweet_cache_duration']);
 		$instance['juiz_last_tweet_default_css'] = strip_tags($new_instance['juiz_last_tweet_default_css']);
 		$instance['juiz-ltw-own-css'] = $new_instance['juiz-ltw-own-css'];
-
-		print_r($instance);
 
 		return $instance;
 	}
@@ -166,17 +164,24 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 	function juiz_last_tweet_output($args = array(), $position) {
 		
-		/*debut du cache*/
-		$cache_file = PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)) . '/cache/index.html';
+		$the_username = $args['juiz_last_tweet_username'];
+		$the_username = preg_replace('#^@(.+)#', '$1', $the_username);
+		$the_nb_tweet = $args['juiz_last_tweet_no_tweets'];
+		$need_cache = ($args['juiz_last_tweet_username']!='0') ? true : false;
+
+		// cache start here
+		$cache_file = JUIZ_LTW_CACHEFILE;
 		$expire = time() - intval($args['juiz_last_tweet_cache_duration']);
 		 
-		if(file_exists($cache_file) && filemtime($cache_file) > $expire)
+		if(file_exists($cache_file) && filemtime($cache_file) > $expire && $need_cache)
 			readfile($cache_file);
 
 		else {
 		
+			if( $need_cache ) {
 			//add4cache
 			ob_start(); // ouverture tampon
+			}
 		
 			function juiz_format_since($timestamp){
 				
@@ -263,9 +268,6 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						$i_guid = $item[2];
 						$i_source = htmlspecialchars_decode($item[3]);
 					
-					
-						/* $i_title = preg_replace( '#'.$username.': #', '', $i_title ); */
-					
 						$xml_result .= '
 							<li>
 								<span class="juiz_lt_content">' . $i_title . '</span>
@@ -286,22 +288,24 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			echo '
 				<div class="juiz_last_tweet_inside">
 					<ul id="juiz_last_tweet_tweetlist">
-						'. get_informations_xml_last_tweet($args['juiz_last_tweet_username'], $args['juiz_last_tweet_no_tweets']) .'
+						'. get_informations_xml_last_tweet($the_username, $the_nb_tweet) .'
 					</ul>
 					
 					<p class="juiz_last_tweet_follow_us">
 						' . __('Follow', 'juiz_ltw') . '
-						<a href="http://twitter.com/' . $args['juiz_last_tweet_username'] . '">@' . $args['juiz_last_tweet_username'] . '</a>
+						<a href="http://twitter.com/' . $the_username . '">@' . $the_username . '</a>
 						' . __('on twitter.', 'juiz_ltw') . '
 					</p>
 				</div>
 			';
 			
-			// save informations
-			$the_last_tweets = ob_get_contents();
-			ob_end_clean(); // stop cache system
-				
-			file_put_contents($cache_file, $the_last_tweets) ; // write last tweets in the $cache_file
+			if( $need_cache ) {
+				// save informations
+				$the_last_tweets = ob_get_contents();
+				ob_end_clean(); // stop cache system
+					
+				file_put_contents($cache_file, $the_last_tweets) ; // write last tweets in the $cache_file
+			}
 			echo $the_last_tweets ; // on affiche notre page :D 
 		}
 	}
@@ -325,7 +329,7 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 		$use_default_css = $array_widgetOptions[2]['juiz_last_tweet_default_css'];
 		
 		if ( $use_default_css )
-			$juiz_last_tweet_css .= '<link type="text/css" media="all" rel="stylesheet" id="juiz_last_tweet_widget_styles" href="'. plugins_url(dirname(plugin_basename(__FILE__))."/css/juiz_last_tweet.css") . '" />';
+			$juiz_last_tweet_css .= '<link type="text/css" media="all" rel="stylesheet" id="juiz_last_tweet_widget_styles" href="'. plugins_url(JUIZ_LTW_PLUGINBASENAME."/css/juiz_last_tweet.css") . '" />';
 
 		if ( $var_sOwnCSS != '' ) {
 			$juiz_last_tweet_css .= '
