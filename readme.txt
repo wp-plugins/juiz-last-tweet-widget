@@ -10,10 +10,10 @@ Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
 
 == Description ==
 
-** PLEASE, NOTE **
-** Because of a limitation imposed by Twitter (150 updates per IP server per hour), the plugin displays the error loading sentence often.**
-** For the next update of the plugin, this limit will be 350, with a different method to connect to the Twitter API. **
-** Sorry for the inconvenience. **
+**PLEASE, NOTE**
+**Because of a limitation imposed by Twitter (150 updates per IP server per hour), the plugin displays the error loading sentence often.**
+**For the next update of the plugin, this limit will be 350, with a different method to connect to the Twitter API.**
+**Sorry for the inconvenience.**
 
 Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
 
@@ -51,10 +51,10 @@ Français
 ----
 
 
-** MERCI DE VOTRE ATTENTION **
-** À cause de la limitation imposée par Twitter (150 actualisations par IP et par heure), le plug-in affiche souvent la phrase d'erreur de chargement. **
-** À la prochaine mise à jour du plug-in, cette limite sera de 350 grâce à une autre méthode de connexion à l'API Twitter. **
-** Désolé pour le dérangement. **
+**MERCI DE VOTRE ATTENTION**
+**À cause de la limitation imposée par Twitter (150 actualisations par IP et par heure), le plug-in affiche souvent la phrase d'erreur de chargement.**
+**À la prochaine mise à jour du plug-in, cette limite sera de 350 grâce à une autre méthode de connexion à l'API Twitter.**
+**Désolé pour le dérangement.**
 
 
 Ajoute un widget à votre site pour lister vos derniers tweets, sans JavaScript !
