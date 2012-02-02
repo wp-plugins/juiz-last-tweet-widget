@@ -4,12 +4,17 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets)
  * Author: Geoffrey Crofte
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
 
 /**
+ * = 1.0.1 =
+ * Bug fix for Twitter API limitation
+ * Bug fix for disabling default CSS
+ * You can now show your avatar
+ *
  * = 1.0.0 =
  * Fix first version of cache
  *
@@ -38,7 +43,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-define('JUIZ_LTW_VERSION', '1.0.0');
+define('JUIZ_LTW_VERSION', '1.0.1');
 define('JUIZ_LTW_PLUGINBASENAME', dirname(plugin_basename(__FILE__)));
 define('JUIZ_LTW_PLUGINPATH', PLUGINDIR . '/' . JUIZ_LTW_PLUGINBASENAME);
 define('JUIZ_LTW_CACHEFILE',  JUIZ_LTW_PLUGINPATH . '/cache/index.html');
@@ -67,13 +72,18 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			'juiz_last_tweet_title' => '',
 			'juiz_last_tweet_username' => '',
 			'juiz_last_tweet_no_tweets' => '1',
+			'juiz_last_tweet_show_avatar' => false,
 			'juiz_last_tweet_cache_duration' => 0,
-			'juiz_last_tweet_default_css' => true
+			'juiz_last_tweet_default_css' => false
 		));
 		
 		$default_css_checked = ' checked="checked"';
 		if ( $instance['juiz_last_tweet_default_css'] == false )
 			$default_css_checked = '';
+			
+		$show_avatar_checked = ' checked="checked"';
+		if ( $instance['juiz_last_tweet_show_avatar'] == false )
+			$show_avatar_checked = '';
 			
 
 		// Version of the plugin (hidden field)
@@ -105,6 +115,10 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				<label>' . __('Duration of cache', 'juiz_ltw') . '<br />
 				<input style="margin-left: 1em; text-align:right;" id="' . $this->get_field_id('juiz_last_tweet_cache_duration') . '" name="' . $this->get_field_name('juiz_last_tweet_cache_duration') . '" type="text" size="10" value="' . $instance['juiz_last_tweet_cache_duration'] . '" /> '.__('Seconds', 'juiz_ltw').' <abbr title="' . __('A big number save your page speed. Try to use the delay between each tweet you make. (e.g. 1800 s = 30 min)', 'juiz_ltw') . '">(?)</abbr></label>
 			</p>
+			<p>
+				<label>' . __('Show your avatar?', 'juiz_ltw') . ' 
+				<input type="checkbox" name="' . $this->get_field_name('juiz_last_tweet_show_avatar') . '" id="' . $this->get_field_id('juiz_last_tweet_show_avatar') . '"'.$show_avatar_checked.' /> <abbr title="' . __("If it's possible, display your avatar at the top of tweets list", 'juiz_ltw') . '">(?)</abbr></label>
+			</p>
 		';
 		
 		// Default & Own CSS
@@ -112,7 +126,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			<p style="border-bottom: 1px solid #DFDFDF;"><strong>' . __('Manage CSS', 'juiz_ltw') . '</strong></p>
 			
 			<p>
-				<label>' . __('Use the default CSS ?', 'juiz_ltw') . ' 
+				<label>' . __('Use the default CSS?', 'juiz_ltw') . ' 
 				<input type="checkbox" name="' . $this->get_field_name('juiz_last_tweet_default_css') . '" id="' . $this->get_field_id('juiz_last_tweet_default_css') . '"'.$default_css_checked.' /> <abbr title="' . __('Load a little CSS file with default styles for the widget', 'juiz_ltw') . '">(?)</abbr></label>
 			</p>
 			<p>
@@ -132,16 +146,18 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			'juiz_last_tweet_title' => '',
 			'juiz_last_tweet_username' => '',
 			'juiz_last_tweet_no_tweets' => '1',
+			'juiz_last_tweet_show_avatar' => false,
 			'juiz_last_tweet_cache_duration' => 0,
-			'juiz_last_tweet_default_css' => true
+			'juiz_last_tweet_default_css' => false
 		));
 
 		$instance['plugin-version'] = strip_tags($new_instance['juiz_last_tweet-version']);
 		$instance['juiz_last_tweet_title'] = strip_tags($new_instance['juiz_last_tweet_title']);
 		$instance['juiz_last_tweet_username'] = strip_tags($new_instance['juiz_last_tweet_username']);
 		$instance['juiz_last_tweet_no_tweets'] = strip_tags($new_instance['juiz_last_tweet_no_tweets']);
-		$instance['juiz_last_tweet_cache_duration'] = strip_tags($new_instance['juiz_last_tweet_cache_duration']);
-		$instance['juiz_last_tweet_default_css'] = strip_tags($new_instance['juiz_last_tweet_default_css']);
+		$instance['juiz_last_tweet_show_avatar'] = strip_tags($new_instance['juiz_last_tweet_show_avatar']);
+		$instance['juiz_last_tweet_cache_duration'] = $new_instance['juiz_last_tweet_cache_duration'];
+		$instance['juiz_last_tweet_default_css'] = $new_instance['juiz_last_tweet_default_css'];
 		$instance['juiz-ltw-own-css'] = $new_instance['juiz-ltw-own-css'];
 
 		return $instance;
@@ -167,23 +183,25 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		$the_username = $args['juiz_last_tweet_username'];
 		$the_username = preg_replace('#^@(.+)#', '$1', $the_username);
 		$the_nb_tweet = $args['juiz_last_tweet_no_tweets'];
-		$need_cache = ($args['juiz_last_tweet_username']!='0') ? true : false;
+		$need_cache = ($args['juiz_last_tweet_cache_duration']!='0') ? true : false;
+		$show_avatar = ($args['juiz_last_tweet_show_avatar']) ? true : false;
 
 		// cache start here
 		$cache_file = JUIZ_LTW_CACHEFILE;
 		$expire = time() - intval($args['juiz_last_tweet_cache_duration']);
 		 
+		// if cache is not expired, use it !
 		if(file_exists($cache_file) && filemtime($cache_file) > $expire && $need_cache)
 			readfile($cache_file);
-
+			
+		// if cache is expired, or if we don't want cache
 		else {
+			// if cache is expired and we need cache
+			if ( $need_cache ) ob_start();
 		
-			if( $need_cache ) {
-			//add4cache
-			ob_start(); // ouverture tampon
-			}
-		
-			function juiz_format_since($timestamp){
+			function jltw_format_since($date){
+				
+				$timestamp = strtotime($date);
 				
 				$the_date = '';
 				$now = time();
@@ -209,92 +227,117 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				return $the_date;
 			}
 			
+			function jltw_format_tweettext($raw_tweet, $username) {
+
+				$i_text = htmlspecialchars_decode($raw_tweet);
+				/* $i_text = preg_replace('#(([a-zA-Z0-9_-]{1,130})\.([a-z]{2,4})(/[a-zA-Z0-9_-]+)?((\#)([a-zA-Z0-9_-]+))?)#','<a href="//$1">$1</a>',$i_text); */
+				$i_text = preg_replace('#(((https?|ftp)://(w{3}\.)?)(?<!www)(\w+-?)*\.([a-z]{2,4})(/[a-zA-Z0-9_-]+)?)#',' <a href="$1" rel="nofollow" class="juiz_last_tweet_url">$5.$6$7</a>',$i_text);
+				$i_text = preg_replace('#@([a-zA-z0-9_]+)#i','<a href="http://twitter.com/$1" class="juiz_last_tweet_tweetos" rel="nofollow">@$1</a>',$i_text);
+				$i_text = preg_replace('#[^&]\#([a-zA-z0-9_]+)#i',' <a href="http://twitter.com/#!/search/%23$1" class="juiz_last_tweet_hastag" rel="nofollow">#$1</a>',$i_text);
+				$i_text = preg_replace( '#^'.$username.': #i', '', $i_text );
+				
+				return $i_text;
 			
-			function juiz_read_rss($file,$objects) {
-
-				// read all the file
-				if($string = @implode("",@file($file))) {
-
-					// split the string in items
-					$tmp = preg_split("/<\/?"."item".">/",$string);
-
-					// for each item
-					for($i=1;$i<sizeof($tmp)-1;$i+=2)
-
-						// we read each of those objects
-						foreach($objects as $obj) {
-
-							// we split the string to obtain the content of the object
-							$tmp2 = preg_split("/<\/?".$obj.">/",$tmp[$i]);
-
-							// we add the content of the object to the results array
-							$resultat[$i-1][] = @$tmp2[1];
-						}
-
-					// on retourne le tableau resultat
-					return $resultat;
-				}
 			}
 			
-			function url_exists($url) {
-				$hdrs = @get_headers($url);
-				return is_array($hdrs) ? preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/',$hdrs[0]) : false;
-			} 
+			function jltw_format_tweetsource($raw_source) {
 			
-			function get_informations_xml_last_tweet($username, $nb_tweets) {
+				$i_source = htmlspecialchars_decode($raw_source);
+				$i_source = preg_replace('#^web$#','<a href="http://twitter.com">Twitter</a>', $i_source);
+				
+				return $i_source;
+			
+			}
+			
+			
+			function jltw_get_the_user_timeline($username, $nb_tweets, $show_avatar) {
 				
 				$username = (empty($username)) ? 'geoffrey_crofte' : $username;
 				$nb_tweets = (empty($nb_tweets) OR $nb_tweets == 0) ? 1 : $nb_tweets;
-				$xml_result = '';
+				$xml_result = $the_best_feed = '';
 				
-				// if the RSS file is loaded (exists ou readable)
-				if ( !url_exists('http://twitter.com/statuses/user_timeline/'.$username.'.rss?count='.intval($nb_tweets))) {
-					echo '<em>'.__('The RSS feed for this twitter account is not loadable for the moment.', 'juiz_ltw').'</em>';
-					return;
-				}
+				// include of WP's feed functions
+				include_once(ABSPATH . WPINC . '/feed.php');
 				
-				$xml_infos = juiz_read_rss('http://twitter.com/statuses/user_timeline/'.$username.'.rss?count='.intval($nb_tweets), array('pubDate','title','guid','twitter:source'));
-				
-				if($xml_infos) {
+				// some RSS feed with timeline user
+				$search_feed1 = "http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=".$username."&count=".intval($nb_tweets);
+				$search_feed2 = "http://search.twitter.com/search.rss?q=from%3A".$username."&rpp=".intval($nb_tweets);
 
-					foreach($xml_infos as $item) {
+				
+				// get the better feed
+				// try with the first one
+				
+				$sf_rss = fetch_feed ( $search_feed1 );
+				if ( is_wp_error($sf_rss) ) {
+					// if first one is not ok, try with the second one
+					$sf_rss = fetch_feed ( $search_feed2 );
 					
-						$i_creat = strtotime($item[0]);
-						$i_title = htmlspecialchars_decode($item[1]);
-						$i_title = preg_replace('#(((https?|ftp)://(w{3}\.)?)(?<!www)(\w+-?)*\.([a-z]{2,4})(/[a-zA-Z0-9_-]+)?)#',' <a href="$1" class="juiz_last_tweet_url">$1</a>',$i_title);
-						$i_title = preg_replace('#@([a-zA-z0-9_]+)#i','<a href="http://twitter.com/$1" class="juiz_last_tweet_tweetos">@$1</a>',$i_title);
-						$i_title = preg_replace('#[^&]\#([a-zA-z0-9_]+)#i',' <a href="http://twitter.com/search?q=#$1" class="juiz_last_tweet_hastag">#$1</a>',$i_title);
-						$i_title = preg_replace( '#^'.$username.': #i', '', $i_title );
-						$i_guid = $item[2];
-						$i_source = htmlspecialchars_decode($item[3]);
-					
+					if ( is_wp_error($sf_rss) ) $the_best_feed = false;
+					else $the_best_feed = '2';
+				}
+				else $the_best_feed = '1';
+				
+				// if one of the rss is readable
+				if ( $the_best_feed ) {
+					$max_i = $sf_rss -> get_item_quantity($nb_tweets);
+					$rss_i = $sf_rss -> get_items(0, $max_i);
+					$i = 0;
+					foreach ( $rss_i as $tweet ) {
+						$i++;
+						$i_title = jltw_format_tweettext($tweet -> get_title() , $username);
+						$i_creat = jltw_format_since( $tweet -> get_date() );
+						
+						$i_guid = $tweet->get_link();
+						
+						$author_tag = $tweet->get_item_tags('','author');
+						$author_a = $author_tag[0]['data'];
+						$author = substr($author_a, 0, stripos($author_a, "@") );
+						
+						$source_tag = $tweet->get_item_tags('http://api.twitter.com','source');
+						$i_source = $source_tag[0]['data'];
+						$i_source = jltw_format_tweetsource($i_source);
+						$i_source = ($i_source) ? '<span class="juiz_ltw_source">via ' . $i_source : '</span>';
+						
+						if ( $the_best_feed == '1' && $show_avatar) {
+							$avatar = "http://api.twitter.com/1/users/profile_image/". $username .".xml?size=normal"; // or bigger
+						}
+						elseif ($the_best_feed == '2' && $show_avatar) {
+							$avatar_tag = $tweet->get_item_tags('http://base.google.com/ns/1.0','image_link');
+							$avatar = $avatar_tag[0]['data'];
+						}
+						
+						$html_avatar = ($i==1 && $show_avatar && $avatar) ? '<span class="user_avatar"><a href="http://twitter.com/' . $username . '" title="' . __('Follow', 'juiz_ltw') . ' @'.$author.' ' . __('on twitter.', 'juiz_ltw') . '"><img src="'.$avatar.'" alt="'.$author.'" width="48" height="48" /></a></span>' : '';
+						//echo $i_title.'<br />'.$i_creat.'<br />'.$link_tag.'<br />'.$author.'('.$avatar.')<br /><br />';
 						$xml_result .= '
 							<li>
+								'.$html_avatar.'
 								<span class="juiz_lt_content">' . $i_title . '</span>
 								<em class="juiz_last_tweet_inner">' . __('Time ago', 'juiz_ltw') . '
-									<a href="'.$i_guid .'" target="_blank">' . juiz_format_since( $i_creat ) . '</a>
-									via ' . $i_source . '
+									<a href="'.$i_guid .'" target="_blank">' . $i_creat . '</a>
+									'. $i_source .'
 								</em>
 							</li>
 						';
 					}
 				}
-				
+				// if any feed is readable
+				else 
+					$xml_result = '<li><em>'.__('The RSS feed for this twitter account is not loadable for the moment.', 'juiz_ltw').'</em></li>';
+
 				return $xml_result;
 			}
 			
 			// display the widget front content (but not immediatly because of cache system)
-			
 			echo '
 				<div class="juiz_last_tweet_inside">
 					<ul id="juiz_last_tweet_tweetlist">
-						'. get_informations_xml_last_tweet($the_username, $the_nb_tweet) .'
+						'. jltw_get_the_user_timeline($the_username, $the_nb_tweet, $show_avatar) .'
 					</ul>
 					
 					<p class="juiz_last_tweet_follow_us">
-						' . __('Follow', 'juiz_ltw') . '
-						<a href="http://twitter.com/' . $the_username . '">@' . $the_username . '</a>
-						' . __('on twitter.', 'juiz_ltw') . '
+						<span class="juiz_ltw_follow">' . __('Follow', 'juiz_ltw') . '</span>
+						<a class="juiz_ltw_username" href="http://twitter.com/' . $the_username . '">@' . $the_username . '</a>
+						<span class="juiz_ltw_ontwitter">' . __('on twitter.', 'juiz_ltw') . '</span>
 					</p>
 				</div>
 			';
@@ -306,7 +349,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					
 				file_put_contents($cache_file, $the_last_tweets) ; // write last tweets in the $cache_file
 			}
-			echo $the_last_tweets ; // on affiche notre page :D 
+			echo $the_last_tweets ; // display the tweets
 		}
 	}
 }
@@ -314,21 +357,27 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 add_action('widgets_init', create_function('', 'return register_widget("Juiz_Last_Tweet_Widget");'));
 
 /**
- * Custom styles et JS
+ * Custom styles et <del>JS</del>
  */
  if(!is_admin()) {
-	 
-	//wp_enqueue_script('jquery');
 
 	function juiz_last_tweet_head() {
 
 		$juiz_last_tweet_css = '';
+		$$use_default_css = $var_sOwnCSS = '';
 		
 		$array_widgetOptions = get_option('widget_juiz_last_tweet_widget');
-		$var_sOwnCSS = $array_widgetOptions[2]['juiz-ltw-own-css'];
-		$use_default_css = $array_widgetOptions[2]['juiz_last_tweet_default_css'];
+		
+		foreach($array_widgetOptions as $key => $value) {
+			if($value['juiz-ltw-own-css'])
+				$var_sOwnCSS = $value['juiz-ltw-own-css'];
+			elseif($value['juiz_last_tweet_default_css']) {
+				$use_default_css = $value['juiz_last_tweet_default_css'];
+			}
+		}
 		
 		if ( $use_default_css )
+			// wp_enqueue_style() add the style in the footer of document... why ? Oo
 			$juiz_last_tweet_css .= '<link type="text/css" media="all" rel="stylesheet" id="juiz_last_tweet_widget_styles" href="'. plugins_url(JUIZ_LTW_PLUGINBASENAME."/css/juiz_last_tweet.css") . '" />';
 
 		if ( $var_sOwnCSS != '' ) {
@@ -345,7 +394,7 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 	}
 
 	function juiz_last_tweet_footer() {
-		$var_custom_juiz_scripts = "\n\n".'<!-- No script for Juiz Last Tweet widget :) -->'."\n\n";
+		$var_custom_juiz_scripts = "\n\n".'<!-- No script for Juiz Last Tweet Widget :) -->'."\n\n";
 		echo $var_custom_juiz_scripts;
 	}
 
