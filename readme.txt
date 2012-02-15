@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJ
 Tags: twitter, widget, social, sidebar, last, tweet
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 
 Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
 
@@ -111,6 +111,9 @@ If this link show your 2 last tweets, it's the fault of my script, so contact me
 
 == Changelog ==
 
+= 1.0.2 =
+* Bug fix for cache system (now uses the WP cache ssystem)
+
 = 1.0.1 =
 * Bug fix for Twitter API limitation
 * Bug fix for disabling default CSS
@@ -123,7 +126,22 @@ If this link show your 2 last tweets, it's the fault of my script, so contact me
 = 1.0.0 beta =
 * Initial Release, beta.
 
+== Informations ==
+
+Another plugin :
+* [Juiz Smart Mobile Admin](http://wordpress.org/extend/plugins/juiz-smart-mobile-admin/ "Your blog always with you")
+
+You like it and want to donate for this plugin ?
+Thank you !
+[Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest "Donate to this WordPress plugin")
+
 == Upgrade Notice ==
+
+= 1.0.2 =
+Upgrade if you tweets, tweets and tweets again and again
+
+= 1.0.1 =
+Need upgrade
 
 = 1.0.0 =
 No need to upgrade if your tweets are displayed.

@@ -4,12 +4,15 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets)
  * Author: Geoffrey Crofte
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
 
 /**
+ * = 1.0.2 =
+ * Bug fix for cache system (now uses the WP cache system)
+ *
  * = 1.0.1 =
  * Bug fix for Twitter API limitation
  * Bug fix for disabling default CSS
@@ -43,10 +46,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-define('JUIZ_LTW_VERSION', '1.0.1');
+define('JUIZ_LTW_VERSION', '1.0.2');
 define('JUIZ_LTW_PLUGINBASENAME', dirname(plugin_basename(__FILE__)));
 define('JUIZ_LTW_PLUGINPATH', PLUGINDIR . '/' . JUIZ_LTW_PLUGINBASENAME);
-define('JUIZ_LTW_CACHEFILE',  JUIZ_LTW_PLUGINPATH . '/cache/index.html');
 
 class Juiz_Last_Tweet_Widget extends WP_Widget {
 
@@ -186,18 +188,17 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		$need_cache = ($args['juiz_last_tweet_cache_duration']!='0') ? true : false;
 		$show_avatar = ($args['juiz_last_tweet_show_avatar']) ? true : false;
 
-		// cache start here
-		$cache_file = JUIZ_LTW_CACHEFILE;
-		$expire = time() - intval($args['juiz_last_tweet_cache_duration']);
+
+
+
+		if ( !function_exists ('juiz_ltw_filter_handler') ) {
+			function juiz_ltw_filter_handler ( $seconds ) {
+				// change the default feed cache recreation period to 2 hours
+				return intval($args['juiz_last_tweet_cache_duration']); //seconds
+			}
+		}
+		add_filter( 'wp_feed_cache_transient_lifetime' , 'juiz_ltw_filter_handler' ); 
 		 
-		// if cache is not expired, use it !
-		if(file_exists($cache_file) && filemtime($cache_file) > $expire && $need_cache)
-			readfile($cache_file);
-			
-		// if cache is expired, or if we don't want cache
-		else {
-			// if cache is expired and we need cache
-			if ( $need_cache ) ob_start();
 		
 			function jltw_format_since($date){
 				
@@ -341,16 +342,6 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					</p>
 				</div>
 			';
-			
-			if( $need_cache ) {
-				// save informations
-				$the_last_tweets = ob_get_contents();
-				ob_end_clean(); // stop cache system
-					
-				file_put_contents($cache_file, $the_last_tweets) ; // write last tweets in the $cache_file
-			}
-			echo $the_last_tweets ; // display the tweets
-		}
 	}
 }
 
