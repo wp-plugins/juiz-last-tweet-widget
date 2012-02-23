@@ -4,12 +4,16 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets)
  * Author: Geoffrey Crofte
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
 
 /**
+ * = 1.0.3 =
+ * Bug fix for multiple Last Tweet Widgets
+ * Bug fix for HTML tag display inside Tweets
+ *
  * = 1.0.2 =
  * Bug fix for cache system (now uses the WP cache system)
  *
@@ -46,7 +50,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-define('JUIZ_LTW_VERSION', '1.0.2');
+define('JUIZ_LTW_VERSION', '1.0.3');
 define('JUIZ_LTW_PLUGINBASENAME', dirname(plugin_basename(__FILE__)));
 define('JUIZ_LTW_PLUGINPATH', PLUGINDIR . '/' . JUIZ_LTW_PLUGINBASENAME);
 
@@ -199,8 +203,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		}
 		add_filter( 'wp_feed_cache_transient_lifetime' , 'juiz_ltw_filter_handler' ); 
 		 
-		
-			function jltw_format_since($date){
+		if ( !function_exists('jltw_format_since')) {
+			function jltw_format_since ( $date ) {
 				
 				$timestamp = strtotime($date);
 				
@@ -227,11 +231,15 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			
 				return $the_date;
 			}
-			
+		}
+		if ( !function_exists('jltw_format_tweettext')) {
 			function jltw_format_tweettext($raw_tweet, $username) {
 
-				$i_text = htmlspecialchars_decode($raw_tweet);
-				/* $i_text = preg_replace('#(([a-zA-Z0-9_-]{1,130})\.([a-z]{2,4})(/[a-zA-Z0-9_-]+)?((\#)([a-zA-Z0-9_-]+))?)#','<a href="//$1">$1</a>',$i_text); */
+				$i_text = $raw_tweet;			
+				//$i_text = htmlspecialchars_decode($raw_tweet);
+				//$i_text = preg_replace('#(([a-zA-Z0-9_-]{1,130})\.([a-z]{2,4})(/[a-zA-Z0-9_-]+)?((\#)([a-zA-Z0-9_-]+))?)#','<a href="//$1">$1</a>',$i_text); 
+				$i_text = preg_replace('#\<([a-zA-Z])\>#','&lt;$1&gt;',$i_text);
+				$i_text = preg_replace('#\<\/([a-zA-Z])\>#','&lt;/$1&gt;',$i_text);
 				$i_text = preg_replace('#(((https?|ftp)://(w{3}\.)?)(?<!www)(\w+-?)*\.([a-z]{2,4})(/[a-zA-Z0-9_-]+)?)#',' <a href="$1" rel="nofollow" class="juiz_last_tweet_url">$5.$6$7</a>',$i_text);
 				$i_text = preg_replace('#@([a-zA-z0-9_]+)#i','<a href="http://twitter.com/$1" class="juiz_last_tweet_tweetos" rel="nofollow">@$1</a>',$i_text);
 				$i_text = preg_replace('#[^&]\#([a-zA-z0-9_]+)#i',' <a href="http://twitter.com/#!/search/%23$1" class="juiz_last_tweet_hastag" rel="nofollow">#$1</a>',$i_text);
@@ -240,7 +248,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				return $i_text;
 			
 			}
-			
+		}
+		if ( !function_exists('jltw_format_tweetsource')) {
 			function jltw_format_tweetsource($raw_source) {
 			
 				$i_source = htmlspecialchars_decode($raw_source);
@@ -249,8 +258,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				return $i_source;
 			
 			}
-			
-			
+		}
+		if ( !function_exists('jltw_get_the_user_timeline')) {
 			function jltw_get_the_user_timeline($username, $nb_tweets, $show_avatar) {
 				
 				$username = (empty($username)) ? 'geoffrey_crofte' : $username;
@@ -307,8 +316,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 							$avatar = $avatar_tag[0]['data'];
 						}
 						
-						$html_avatar = ($i==1 && $show_avatar && $avatar) ? '<span class="user_avatar"><a href="http://twitter.com/' . $username . '" title="' . __('Follow', 'juiz_ltw') . ' @'.$author.' ' . __('on twitter.', 'juiz_ltw') . '"><img src="'.$avatar.'" alt="'.$author.'" width="48" height="48" /></a></span>' : '';
-						//echo $i_title.'<br />'.$i_creat.'<br />'.$link_tag.'<br />'.$author.'('.$avatar.')<br /><br />';
+						$html_avatar = ($i==1 && $show_avatar && $avatar) ? '<span class="user_avatar"><a href="http://twitter.com/' . $username . '" title="' . __('Follow', 'juiz_ltw') . ' @'.$username.' ' . __('on twitter.', 'juiz_ltw') . '"><img src="'.$avatar.'" alt="'.$author.'" width="48" height="48" /></a></span>' : '';
+						
 						$xml_result .= '
 							<li>
 								'.$html_avatar.'
@@ -327,7 +336,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 				return $xml_result;
 			}
-			
+		}
 			// display the widget front content (but not immediatly because of cache system)
 			echo '
 				<div class="juiz_last_tweet_inside">
@@ -352,41 +361,45 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
  */
  if(!is_admin()) {
 
-	function juiz_last_tweet_head() {
+	if(!function_exists('juiz_last_tweet_head')) {
+		function juiz_last_tweet_head() {
 
-		$juiz_last_tweet_css = '';
-		$$use_default_css = $var_sOwnCSS = '';
-		
-		$array_widgetOptions = get_option('widget_juiz_last_tweet_widget');
-		
-		foreach($array_widgetOptions as $key => $value) {
-			if($value['juiz-ltw-own-css'])
-				$var_sOwnCSS = $value['juiz-ltw-own-css'];
-			elseif($value['juiz_last_tweet_default_css']) {
-				$use_default_css = $value['juiz_last_tweet_default_css'];
+			$juiz_last_tweet_css = '';
+			$$use_default_css = $var_sOwnCSS = '';
+			
+			$array_widgetOptions = get_option('widget_juiz_last_tweet_widget');
+			
+			if(is_array($array_widgetOptions)) {
+				foreach($array_widgetOptions as $key => $value) {
+					if($value['juiz-ltw-own-css'])
+						$var_sOwnCSS = $value['juiz-ltw-own-css'];
+					elseif($value['juiz_last_tweet_default_css']) {
+						$use_default_css = $value['juiz_last_tweet_default_css'];
+					}
+				}
+				
+				if ( $use_default_css )
+					// wp_enqueue_style() add the style in the footer of document... why ? Oo
+					$juiz_last_tweet_css .= '<link type="text/css" media="all" rel="stylesheet" id="juiz_last_tweet_widget_styles" href="'. plugins_url(JUIZ_LTW_PLUGINBASENAME."/css/juiz_last_tweet.css") . '" />';
+
+				if ( $var_sOwnCSS != '' ) {
+					$juiz_last_tweet_css .= '
+						<style type="text/css">
+							<!--
+							'  . $var_sOwnCSS . '
+							-->
+						</style>
+					';
+				}
 			}
+			echo $juiz_last_tweet_css;
 		}
-		
-		if ( $use_default_css )
-			// wp_enqueue_style() add the style in the footer of document... why ? Oo
-			$juiz_last_tweet_css .= '<link type="text/css" media="all" rel="stylesheet" id="juiz_last_tweet_widget_styles" href="'. plugins_url(JUIZ_LTW_PLUGINBASENAME."/css/juiz_last_tweet.css") . '" />';
-
-		if ( $var_sOwnCSS != '' ) {
-			$juiz_last_tweet_css .= '
-				<style type="text/css">
-					<!--
-					'  . $var_sOwnCSS . '
-					-->
-				</style>
-			';
-		}
-		
-		echo $juiz_last_tweet_css;
 	}
-
-	function juiz_last_tweet_footer() {
-		$var_custom_juiz_scripts = "\n\n".'<!-- No script for Juiz Last Tweet Widget :) -->'."\n\n";
-		echo $var_custom_juiz_scripts;
+	if(!function_exists('juiz_last_tweet_footer')) {
+		function juiz_last_tweet_footer() {
+			$var_custom_juiz_scripts = "\n\n".'<!-- No script for Juiz Last Tweet Widget :) -->'."\n\n";
+			echo $var_custom_juiz_scripts;
+		}
 	}
 
 	// custom head and footer
