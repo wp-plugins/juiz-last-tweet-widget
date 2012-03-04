@@ -106,8 +106,55 @@ You can use one of the both method :
 Try to visit the link : http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=2 by replacing "USERNAME" with your own username.
 If nothing happens, try with : http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=2
 If nothing happens, it's the fault of Twitter API limitation.
-
 If this link show your 2 last tweets, it's the fault of my script, so contact me.
+
+= You need to custom the design, hide something ? =
+You can use lot of CSS classes to help you in you quest :)
+
+`/* The big container */`
+`.juiz_last_tweet_widget { }`
+
+`/* The list of tweets and "follow me" container */`
+`.juiz_last_tweet_inside { }`
+
+`/* The list of tweets */`
+`.juiz_last_tweet_tweetlist { }`
+
+`/* The user avatar */`
+`.juiz_last_tweet_widget .user_avatar { }`
+
+`/* The user avatar link */`
+`.juiz_last_tweet_widget .user_avatar a { }`
+
+`/* The user avatar image */`
+`.juiz_last_tweet_widget .user_avatar img { }`
+
+`/* The tweet content (for each tweets) */`
+`.juiz_lt_content { }`
+
+`/* The links inside a tweet */`
+`.juiz_last_tweet_tweetos { }`
+`.juiz_last_tweet_hastag { }`
+`.juiz_last_tweet_url { }`
+
+`/* The tweet meta-data */`
+`.juiz_last_tweet_inner { }`
+
+`/* The source */`
+`.juiz_ltw_source { }`
+
+`/* The "follow us" baseline */`
+`.juiz_last_tweet_follow_us { }`
+
+`/* The "follow" word */`
+`.juiz_ltw_follow { }`
+
+`/* The username link */`
+`.juiz_ltw_username { }`
+
+`/* The "on Twitter" words */`
+`.juiz_ltw_ontwitter { }`
+
 
 == Changelog ==
 
