@@ -4,12 +4,15 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets)
  * Author: Geoffrey Crofte
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
 
 /**
+ * = 1.0.4 =
+ * Optionnal autoslide tweets, one by one (use JavaScript)
+ *
  * = 1.0.3 =
  * Bug fix for multiple Last Tweet Widgets
  * Bug fix for HTML tag display inside Tweets
@@ -50,7 +53,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-define('JUIZ_LTW_VERSION', '1.0.3');
+define('JUIZ_LTW_VERSION', '1.0.4');
 define('JUIZ_LTW_PLUGINBASENAME', dirname(plugin_basename(__FILE__)));
 define('JUIZ_LTW_PLUGINPATH', PLUGINDIR . '/' . JUIZ_LTW_PLUGINBASENAME);
 
@@ -80,16 +83,21 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			'juiz_last_tweet_no_tweets' => '1',
 			'juiz_last_tweet_show_avatar' => false,
 			'juiz_last_tweet_cache_duration' => 0,
-			'juiz_last_tweet_default_css' => false
+			'juiz_last_tweet_default_css' => false,
+			'juiz_last_tweet_auto_slide' => false,
+			'juiz_last_tweet_auto_slide_delay' => 0
 		));
 		
-		$default_css_checked = ' checked="checked"';
+		$default_css_checked = $show_avatar_checked = $auto_slide_checked = ' checked="checked"';
 		if ( $instance['juiz_last_tweet_default_css'] == false )
 			$default_css_checked = '';
 			
-		$show_avatar_checked = ' checked="checked"';
 		if ( $instance['juiz_last_tweet_show_avatar'] == false )
 			$show_avatar_checked = '';
+			
+		if ( $instance['juiz_last_tweet_auto_slide'] == false )
+			$auto_slide_checked = '';
+			
 			
 
 		// Version of the plugin (hidden field)
@@ -125,6 +133,14 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				<label>' . __('Show your avatar?', 'juiz_ltw') . ' 
 				<input type="checkbox" name="' . $this->get_field_name('juiz_last_tweet_show_avatar') . '" id="' . $this->get_field_id('juiz_last_tweet_show_avatar') . '"'.$show_avatar_checked.' /> <abbr title="' . __("If it's possible, display your avatar at the top of tweets list", 'juiz_ltw') . '">(?)</abbr></label>
 			</p>
+			<p>
+				<label>' . __('Auto slide one by one?', 'juiz_ltw') . ' 
+				<input type="checkbox" name="' . $this->get_field_name('juiz_last_tweet_auto_slide') . '" id="' . $this->get_field_id('juiz_last_tweet_auto_slide') . '"'.$auto_slide_checked.' /> <abbr title="' . __("Use JavaScript to activate an little slider showing tweet by tweet", 'juiz_ltw') . '">(?)</abbr></label>
+			</p>
+			<p>
+				<label>' . __('Delay between 2 tweets?', 'juiz_ltw') . ' 
+				<input style="margin-left: 1em; text-align:right;" id="' . $this->get_field_id('juiz_last_tweet_auto_slide_delay') . '" name="' . $this->get_field_name('juiz_last_tweet_auto_slide_delay') . '" type="text" size="10" value="' . $instance['juiz_last_tweet_auto_slide_delay'] . '" /> '.__('Seconds', 'juiz_ltw').' <abbr title="' . __("Chose a delay if you use the auto slide feature.", 'juiz_ltw') . '">(?)</abbr></label>
+			</p>
 		';
 		
 		// Default & Own CSS
@@ -154,7 +170,9 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			'juiz_last_tweet_no_tweets' => '1',
 			'juiz_last_tweet_show_avatar' => false,
 			'juiz_last_tweet_cache_duration' => 0,
-			'juiz_last_tweet_default_css' => false
+			'juiz_last_tweet_default_css' => false,
+			'juiz_last_tweet_auto_slide' => false,
+			'juiz_last_tweet_auto_slide_delay' => 0
 		));
 
 		$instance['plugin-version'] = strip_tags($new_instance['juiz_last_tweet-version']);
@@ -164,6 +182,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		$instance['juiz_last_tweet_show_avatar'] = strip_tags($new_instance['juiz_last_tweet_show_avatar']);
 		$instance['juiz_last_tweet_cache_duration'] = $new_instance['juiz_last_tweet_cache_duration'];
 		$instance['juiz_last_tweet_default_css'] = $new_instance['juiz_last_tweet_default_css'];
+		$instance['juiz_last_tweet_auto_slide'] = $new_instance['juiz_last_tweet_auto_slide'];
+		$instance['juiz_last_tweet_auto_slide_delay'] = $new_instance['juiz_last_tweet_auto_slide_delay'];
 		$instance['juiz-ltw-own-css'] = $new_instance['juiz-ltw-own-css'];
 
 		return $instance;
@@ -186,11 +206,18 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 	function juiz_last_tweet_output($args = array(), $position) {
 		
+		$need_auto_slide_class = $data_delay = '';
+		
 		$the_username = $args['juiz_last_tweet_username'];
 		$the_username = preg_replace('#^@(.+)#', '$1', $the_username);
 		$the_nb_tweet = $args['juiz_last_tweet_no_tweets'];
 		$need_cache = ($args['juiz_last_tweet_cache_duration']!='0') ? true : false;
 		$show_avatar = ($args['juiz_last_tweet_show_avatar']) ? true : false;
+		if ( $the_nb_tweet > 1 ) {
+			$need_auto_slide_class = ($args['juiz_last_tweet_auto_slide']) ? ' juiz_ltw_autoslide' : '';
+			if($args['juiz_last_tweet_auto_slide'])
+				$data_delay = (intval($args['juiz_last_tweet_auto_slide_delay']) == 0) ? ' data-delay="7"' : ' data-delay="'.$args['juiz_last_tweet_auto_slide_delay'].'"';
+		}
 
 
 
@@ -270,8 +297,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				include_once(ABSPATH . WPINC . '/feed.php');
 				
 				// some RSS feed with timeline user
-				$search_feed1 = "http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=".$username."&count=".intval($nb_tweets);
-				$search_feed2 = "http://search.twitter.com/search.rss?q=from%3A".$username."&rpp=".intval($nb_tweets);
+				$search_feed1 = "http://search.twitter.com/search.rss?q=from%3A".$username."&rpp=".intval($nb_tweets);
+				$search_feed2 = "http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=".$username."&count=".intval($nb_tweets);
 
 				
 				// get the better feed
@@ -339,7 +366,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		}
 			// display the widget front content (but not immediatly because of cache system)
 			echo '
-				<div class="juiz_last_tweet_inside">
+				<div'.$data_delay.' class="juiz_last_tweet_inside'.$need_auto_slide_class.'">
 					<ul id="juiz_last_tweet_tweetlist">
 						'. jltw_get_the_user_timeline($the_username, $the_nb_tweet, $show_avatar) .'
 					</ul>
@@ -365,7 +392,7 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 		function juiz_last_tweet_head() {
 
 			$juiz_last_tweet_css = '';
-			$$use_default_css = $var_sOwnCSS = '';
+			$use_default_css = $var_sOwnCSS = '';
 			
 			$array_widgetOptions = get_option('widget_juiz_last_tweet_widget');
 			
@@ -401,9 +428,34 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 			echo $var_custom_juiz_scripts;
 		}
 	}
-
+	if ( !function_exists('juiz_last_tweet_scripts')) {
+		function juiz_last_tweet_scripts() {
+			
+			$need_auto_slide = false;
+			
+			$array_widgetOptions = get_option('widget_juiz_last_tweet_widget');
+			
+			if(is_array($array_widgetOptions)) {
+				foreach($array_widgetOptions as $key => $value) {
+					if($value['juiz_last_tweet_auto_slide'])
+						$need_auto_slide = $value['juiz_last_tweet_auto_slide'];
+				}
+				
+				if($need_auto_slide==true) {
+					wp_enqueue_script(
+						'juiz_ltw_auto_slide',
+						plugins_url('/js/juiz_ltw_auto_slide.min.js', __FILE__),
+						array('jquery'),
+						JUIZ_LTW_VERSION
+					);
+				}
+			}
+		}
+	}
+ 
 	// custom head and footer
 	add_action('wp_head', 'juiz_last_tweet_head');
+	add_action('wp_enqueue_scripts', 'juiz_last_tweet_scripts');
 	add_action('wp_footer', 'juiz_last_tweet_footer');
 }
 ?>

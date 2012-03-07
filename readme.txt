@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJ
 Tags: twitter, widget, social, sidebar, last, tweet
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 
 Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
 
@@ -26,6 +26,7 @@ In admin :
 * Show or hide your avatar
 * Default CSS can be disabled or customized
 * Adjustable period for cache system
+* Can use an auto slide script and chose delay between two tweets
 
 In your site :
 
@@ -33,6 +34,7 @@ In your site :
 * Display link (with special CSS classes) for hastags, users, and web link (`nofollow` links)
 * Display twitter's user link and statut's link
 * Display source (web, Tweetdeck, etc.) when it's possible
+* In option : little slideshow of one tweet in a list of tweets
 
 
 **Languages**
@@ -63,6 +65,7 @@ Dans l'administration :
 * Affichez ou cachez votre avatar
 * Styles par défaut personnalisable (peuvent être simplement désactivé ou écrasés)
 * Durée du cache ajustable
+* Possibilité d'activer un slider et d'en choisir le delai entre deux tweets
 
 In your site :
 
@@ -70,6 +73,7 @@ In your site :
 * Affiche les liens (avec des classes spéciales) pour les hastags, utilisateurs, et liens classiques (liens en `nofollow`)
 * Affiche un lien vers le statut et le compte twitter
 * Affiche la source du tweet (web, Tweetdeck, etc.) quand c'est possible
+* En option : mini diaporama composé d'un tweet dans votre liste des derniers tweets
 
 
 **Langages**
@@ -157,6 +161,9 @@ You can use lot of CSS classes to help you in you quest :)
 
 
 == Changelog ==
+
+= 1.0.4 =
+* Optionnal autoslide tweets, one by one (use JavaScript)
 
 = 1.0.3 =
 * Bug fix for multiple Last Tweet Widgets
