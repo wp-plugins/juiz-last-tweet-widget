@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJ
 Tags: twitter, widget, social, sidebar, last, tweet
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.4
+Stable tag: 1.1.0
 
 Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
 
@@ -19,22 +19,25 @@ You also can show your avatar and customize the CSS.
 
 **Features**
 
-In admin :
+In admin:
 
 * Easy to install.
 * Panel for easy configuration (Appearance -> Widgets).
 * Show or hide your avatar
 * Default CSS can be disabled or customized
 * Adjustable period for cache system
-* Can use an auto slide script and chose delay between two tweets
+* Can active an auto slideshow script and chose delay between two tweets
+* Shortcode to insert the widget where you want
 
-In your site :
+In your site:
 
 * Smart default style (CSS)
 * Display link (with special CSS classes) for hastags, users, and web link (`nofollow` links)
 * Display twitter's user link and statut's link
 * Display source (web, Tweetdeck, etc.) when it's possible
-* In option : little slideshow of one tweet in a list of tweets
+* In option: little slideshow of one tweet in a list of tweets
+
+For developpers, numerous hooks are available ;)
 
 
 **Languages**
@@ -43,6 +46,7 @@ In your site :
 * German
 * Spannish
 * French
+* Turkish (thanks to [Hakan](http://kazancexpert.com/ "His website")!)
 
 
 -------------
@@ -65,15 +69,18 @@ Dans l'administration :
 * Affichez ou cachez votre avatar
 * Styles par défaut personnalisable (peuvent être simplement désactivé ou écrasés)
 * Durée du cache ajustable
-* Possibilité d'activer un slider et d'en choisir le delai entre deux tweets
+* Possibilité d'activer un diaporama et d'en choisir le delai entre deux tweets
+* Shortcode disponible pour insérer le widget où vous le souhaitez
 
-In your site :
+Dans votre site :
 
 * Styles par défaut sobres et classes (CSS)
 * Affiche les liens (avec des classes spéciales) pour les hastags, utilisateurs, et liens classiques (liens en `nofollow`)
 * Affiche un lien vers le statut et le compte twitter
 * Affiche la source du tweet (web, Tweetdeck, etc.) quand c'est possible
 * En option : mini diaporama composé d'un tweet dans votre liste des derniers tweets
+
+Pour les développeurs, de nombreux hooks sont disponibles ;)
 
 
 **Langages**
@@ -82,6 +89,7 @@ In your site :
 * Allemand
 * Espagnol
 * Français
+* Turc (merci à [Hakan](http://kazancexpert.com/ "His website") !)
 
 == Installation ==
 
@@ -107,60 +115,31 @@ You can use one of the both method :
 == Frequently Asked Questions ==
 
 = Why the widget show me an error of load for my tweets ? =
+
+Full documentation in the plugin ! (documentation.html)
+Or here: [Documentation](http://plugins.svn.wordpress.org/juiz-last-tweet-widget/trunk/documentation.html "In WordPress SVN")
+
 Try to visit the link : http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=2 by replacing "USERNAME" with your own username.
 If nothing happens, try with : http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=2
 If nothing happens, it's the fault of Twitter API limitation.
 If this link show your 2 last tweets, it's the fault of my script, so contact me.
 
 = You need to custom the design, hide something ? =
-You can use lot of CSS classes to help you in you quest :)
-
-`/* The big container */
-.juiz_last_tweet_widget { }`
-
-`/* The list of tweets and "follow me" container */
-.juiz_last_tweet_inside { }`
-
-`/* The list of tweets */
-.juiz_last_tweet_tweetlist { }`
-
-`/* The user avatar */
-.juiz_last_tweet_widget .user_avatar { }`
-
-`/* The user avatar link */
-.juiz_last_tweet_widget .user_avatar a { }`
-
-`/* The user avatar image */
-.juiz_last_tweet_widget .user_avatar img { }`
-
-`/* The tweet content (for each tweets) */
-.juiz_lt_content { }`
-
-`/* The links inside a tweet */
-.juiz_last_tweet_tweetos { }
-.juiz_last_tweet_hastag { }
-.juiz_last_tweet_url { }`
-
-`/* The tweet meta-data */
-.juiz_last_tweet_inner { }`
-
-`/* The source */
-.juiz_ltw_source { }`
-
-`/* The "follow us" baseline */
-.juiz_last_tweet_follow_us { }`
-
-`/* The "follow" word */
-.juiz_ltw_follow { }`
-
-`/* The username link */
-.juiz_ltw_username { }`
-
-`/* The "on Twitter" words */
-.juiz_ltw_ontwitter { }`
+You can use lot of CSS classes and filters to help you in you quest :)
+See the documentation.html files inside your plugin folder !
 
 
 == Changelog ==
+
+= 1.0.5 =
+* Correction in the date for PHP4 server
+* Correction for cache system
+* Add a shortcode (jltw)
+* Add several hooks (see the FAQ or documentation.html file)
+* Better control and switching of Twitter RSS feed
+* Better links parser
+* Some fixes with CSS (special case)
+* Turkish translation by [Hakan](http://kazancexpert.com/ "His website")
 
 = 1.0.4 =
 * Optionnal autoslide tweets, one by one (use JavaScript)
@@ -189,11 +168,17 @@ You can use lot of CSS classes to help you in you quest :)
 Another plugin :
 * [Juiz Smart Mobile Admin](http://wordpress.org/extend/plugins/juiz-smart-mobile-admin/ "Your blog always with you")
 
-You like it and want to donate for this plugin ?
+You like it ? You can donate or [tweet](https://twitter.com/intent/tweet?hashtags=CreativeJuiz&original_referer=http%3A%2F%2Fwordpress.org%2Fextend%2Fplugins%2Fjuiz-last-tweet-widget%2F&related=geoffrey_crofte&source=WordPress&text=I%20use%20Juiz-Last-Tweet%20Plugin%20for%20WordPress.%20It's%20usefull!!&url=http%3A%2F%2Fwww.creativejuiz.fr%2Fblog%2Fwordpress%2Fwordpress-plugin-afficher-derniers-tweets-widget&via=geoffrey_crofte "Tweet a little word") for this plugin.
 Thank you !
 [Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest "Donate to this WordPress plugin")
 
+Full documentation in the plugin folder ! (documentation.html)
+Or here: [Documentation](http://plugins.svn.wordpress.org/juiz-last-tweet-widget/trunk/documentation.html "In WordPress SVN")
+
 == Upgrade Notice ==
+
+= 1.0.5 =
+Lot of usefull things, and some fixes, update!! ;)
 
 = 1.0.3 =
 Upgrade if you want to display more than one widgets of this plugin
