@@ -131,7 +131,7 @@ See the documentation.html files inside your plugin folder !
 
 == Changelog ==
 
-= 1.0.5 =
+= 1.1.0 =
 * Correction in the date for PHP4 server
 * Correction for cache system
 * Add a shortcode (jltw)
@@ -177,7 +177,7 @@ Or here: [Documentation](http://plugins.svn.wordpress.org/juiz-last-tweet-widget
 
 == Upgrade Notice ==
 
-= 1.0.5 =
+= 1.1.0 =
 Lot of usefull things, and some fixes, update!! ;)
 
 = 1.0.3 =
