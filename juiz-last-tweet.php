@@ -4,12 +4,15 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets)
  * Author: Geoffrey Crofte
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
 
 /**
+ * = 1.1.1 =
+ * Little debug fix
+ *
  * = 1.1.0 =
  * BIG UPDATE
  * Correction in the date for PHP4 server
@@ -63,7 +66,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-define('JUIZ_LTW_VERSION', '1.0.5');
+define('JUIZ_LTW_VERSION', '1.1.1');
 define('JUIZ_LTW_PLUGINBASENAME', dirname(plugin_basename(__FILE__)));
 define('JUIZ_LTW_PLUGINPATH', PLUGINDIR . '/' . JUIZ_LTW_PLUGINBASENAME);
 
@@ -330,8 +333,6 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				
 				// if need update
 				if (!$current_timer OR $current_timer <= time()) {
-					
-					echo 'update<br />';
 					
 					$username = (empty($username)) ? 'geoffrey_crofte' : $username;
 					$nb_tweets = (empty($nb_tweets) OR $nb_tweets == 0) ? 1 : $nb_tweets;

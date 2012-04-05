@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJ
 Tags: twitter, widget, social, sidebar, last, tweet
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 
 Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
 
@@ -131,6 +131,9 @@ See the documentation.html files inside your plugin folder !
 
 == Changelog ==
 
+= 1.1.1 =
+* Little debug fix
+
 = 1.1.0 =
 * Correction in the date for PHP4 server
 * Correction for cache system
@@ -176,6 +179,9 @@ Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://plugins.svn.wordpress.org/juiz-last-tweet-widget/trunk/documentation.html "In WordPress SVN")
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+Need an update if you downloaded 1.1.0
 
 = 1.1.0 =
 Lot of usefull things, and some fixes, update!! ;)
