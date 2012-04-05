@@ -12,6 +12,7 @@
 /**
  * = 1.1.1 =
  * Little debug fix
+ * HTML fix (bad markup at the end of tweet)
  *
  * = 1.1.0 =
  * BIG UPDATE
@@ -414,7 +415,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 							$source_tag = $tweet->get_item_tags('http://api.twitter.com','source');
 							$i_source = $source_tag[0]['data'];
 							$i_source = jltw_format_tweetsource($i_source);
-							$i_source = ($i_source) ? '<span class="juiz_ltw_source">via ' . $i_source : '</span>';
+							$i_source = ($i_source) ? '<span class="juiz_ltw_source">via ' . $i_source . '</span>';
 							
 							if ( $the_best_feed == '1' && $show_avatar) {
 								$avatar = "http://api.twitter.com/1/users/profile_image/". $username .".xml?size=normal"; // or bigger

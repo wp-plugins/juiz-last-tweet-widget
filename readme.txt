@@ -133,6 +133,7 @@ See the documentation.html files inside your plugin folder !
 
 = 1.1.1 =
 * Little debug fix
+* HTML fix (bad markup at the end of tweet)
 
 = 1.1.0 =
 * Correction in the date for PHP4 server
