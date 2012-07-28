@@ -205,6 +205,12 @@
 	<a href="https://twitter.com/intent/tweet?hashtags=CreativeJuiz&amp;text=I%20use%20Juiz%20Last%20Tweet%20Widget%20on%20my%20WordPress%20blog,%20awesome!%20&amp;url=http%3A%2F%2Fwordpress.org%2Fextend%2Fplugins%2Fjuiz-last-tweet-widget%2F&amp;via=geoffrey_crofte" target="_blank" class="tweet button">Tweet it</a>
 	</p>
 	
+	<h2>See also</h2>
+	<ul>
+		<li><a href="http://wordpress.org/extend/plugins/social-subscribers-counter/">Social Subscribers Counter</a> - Same default design than Juiz Last Tweet Widget, allows you to show a counter of followers from several social network,</li>
+		<li><a href="http://wordpress.org/extend/plugins/juiz-smart-mobile-admin/">Juiz Smart Mobile Admin</a> - A responsive layout for your default WordPress Admin theme. Your administration always with you!</li>
+	</ul>
+	
 	<div class="tdm">
 		<h2>Table of content</h2>
 		<ul>
@@ -431,10 +437,22 @@ add_filter('juiz_ltw_time_ago', 'see_more_tweets_link');
 			Why the widget show me an error of load for my tweets ? <span class="since">since 1.0.1</span>
 		</dt>
 		<dd>
-			Try to visit the link : <code>http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=2</code> by replacing "USERNAME" with your own username.
-			<br />If nothing happens, try with : <code>http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=2</code><br />
+			Try to visit the link : <code>http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=2</code> by replacing "USERNAME" with your own username.
+			<br />If nothing happens, try with : <code>http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=2</code><br />
 			If nothing happens, it's the fault of Twitter API limitation.
 			<br />If this link shows your 2 last tweets, it's the fault of my script, so <a href="http://www.creativejuiz.fr/blog/contact?from=jltw">contact me</a>.
+		</dd>
+		
+		
+		<dt>
+			Why the widget shows me less tweets than I ask it to show me ? <span class="since">since 1.1.0</span>
+		</dt>
+		<dd>
+			Twitter do what it wants to do with its feeds of tweets. This plugin uses both of feeds and controls the two to know which is available. The first available is chosen. If the chosen feed don't have tweets enought (example: 2 tweets whereas you chose 4 tweets to display) the selected stream will not allow you to display all your tweets you want.<br /><br />
+			You can try to solve a part of the problem by switching two variables in my code (see <code>`wp-content/plugins/juiz-last-tweet-widget/juiz-last-tweet.php`</code>) on lines 346 and 347.
+			You have <code>$search_feed1</code> and <code>$search_feed2</code>.<br />
+			Just change 1 by 2, and 2 by 1.<br /><br />
+			A future update will allow you to change the feed directly from widget interface.
 		</dd>
 		
 		<dt>
@@ -448,7 +466,7 @@ add_filter('juiz_ltw_time_ago', 'see_more_tweets_link');
 	<div id="footer"><p>Documentation for your life easier !<br />
 	<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Go to Paypal Website" class="button" target="_blank">Donate</a>
 	<a href="https://twitter.com/intent/tweet?hashtags=CreativeJuiz&amp;text=I%20use%20Juiz%20Last%20Tweet%20Widget%20on%20my%20WordPress%20blog,%20awesome!%20&amp;url=http%3A%2F%2Fwordpress.org%2Fextend%2Fplugins%2Fjuiz-last-tweet-widget%2F&amp;via=geoffrey_crofte" target="_blank" class="tweet button">Tweet it</a></p>
-	<p class="last-update">v 1.1.0<br />Last update: 2012, 04 April</p>
+	<p class="last-update">v 1.1.2<br />Last update: 2012, 28 Jully</p>
 	</div>
 </body>
 </html>

@@ -4,12 +4,19 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets)
  * Author: Geoffrey Crofte
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
 
 /**
+ * = 1.1.2 =
+ * Hastag Regexp updated (better multilingual compatibility)
+ * Tested successfully on multiblog
+ * Twitter Logo updated
+ * Files encoding fixes
+ * Little CSS update
+ *
  * = 1.1.1 =
  * Little debug fix
  * HTML fix (bad markup at the end of tweet)
@@ -67,7 +74,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-define('JUIZ_LTW_VERSION', '1.1.1');
+define('JUIZ_LTW_VERSION', '1.1.2');
 define('JUIZ_LTW_PLUGINBASENAME', dirname(plugin_basename(__FILE__)));
 define('JUIZ_LTW_PLUGINPATH', PLUGINDIR . '/' . JUIZ_LTW_PLUGINBASENAME);
 
@@ -76,8 +83,18 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 	function Juiz_Last_Tweet_Widget() {
 	
+		// multilingual
+		
 		if(function_exists('load_plugin_textdomain')) {
 			load_plugin_textdomain('juiz_ltw', JUIZ_LTW_PLUGINPATH . '/languages', JUIZ_LTW_PLUGINBASENAME . '/languages');
+		}
+		
+		// action links setting
+		
+		add_filter( 'plugin_action_links_'.plugin_basename( __FILE__ ), 'juiz_ltw_plugin_action_links',  10, 2);
+		function juiz_ltw_plugin_action_links( $links, $file ) {
+			$links[] = '<a href="'.admin_url('widgets.php').'">' . __('Widgets') .'</a>';
+			return $links;
 		}
 
 		$widget_ops = array(
@@ -293,11 +310,17 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				$i_text = $raw_tweet;			
 				//$i_text = htmlspecialchars_decode($raw_tweet);
 				//$i_text = preg_replace('#(([a-zA-Z0-9_-]{1,130})\.([a-z]{2,4})(/[a-zA-Z0-9_-]+)?((\#)([a-zA-Z0-9_-]+))?)#','<a href="//$1">$1</a>',$i_text); 
-				$i_text = preg_replace('#\<([a-zA-Z])\>#','&lt;$1&gt;',$i_text); // replace tag
-				$i_text = preg_replace('#\<\/([a-zA-Z])\>#','&lt;/$1&gt;',$i_text); // replace ending tag
+				// replace tag
+				$i_text = preg_replace('#\<([a-zA-Z])\>#','&lt;$1&gt;',$i_text);
+				// replace ending tag
+				$i_text = preg_replace('#\<\/([a-zA-Z])\>#','&lt;/$1&gt;',$i_text);
+				// replace classic url
 				$i_text = preg_replace('#(((https?|ftp)://(w{3}\.)?)(?<!www)(\w+-?)*\.([a-z]{2,4})(/[a-zA-Z0-9_\?\=-]+)?)#',' <a href="$1" rel="nofollow" class="juiz_last_tweet_url">$5.$6$7</a>',$i_text);
+				// replace user link
 				$i_text = preg_replace('#@([a-zA-z0-9_]+)#i','<a href="http://twitter.com/$1" class="juiz_last_tweet_tweetos" rel="nofollow">@$1</a>',$i_text);
-				$i_text = preg_replace('#[^&]\#([a-zA-z0-9_é]+)#i',' <a href="http://twitter.com/#!/search/%23$1" class="juiz_last_tweet_hastag" rel="nofollow">#$1</a>',$i_text);
+				// replace hash tag search link ([a-zA-z0-9_] recently replaced by \S)
+				$i_text = preg_replace('#[^&]\#(\S+)#i',' <a href="http://twitter.com/#!/search/%23$1" class="juiz_last_tweet_hastag" rel="nofollow">#$1</a>',$i_text);
+				// remove start username
 				$i_text = preg_replace( '#^'.$username.': #i', '', $i_text );
 				
 				return $i_text;
@@ -316,10 +339,11 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		}
 		if ( !function_exists('jltw_get_the_user_timeline')) {
 			function jltw_get_the_user_timeline($username, $nb_tweets, $show_avatar, $cache_delay) {
-				
+
 				$cache_delay = ($cache_delay == 0 ) ? 1 : $cache_delay;
 				
 				// check if we have transient (cache of HTML)
+				// for multiblog support, maybe use the get_current_blog_id() function to add it in option name ? or not...
 				$current_timer = get_option( 'juiz_ltw_timer_' . $username , false);
 				
 				if ( !$current_timer ) {

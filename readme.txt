@@ -3,8 +3,8 @@ Contributors: CreativeJuiz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: twitter, widget, social, sidebar, last, tweet
 Requires at least: 3.0.1
-Tested up to: 3.3.1
-Stable tag: 1.1.1
+Tested up to: 3.4.1
+Stable tag: 1.1.2
 
 Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
 
@@ -31,7 +31,7 @@ In admin:
 
 In your site:
 
-* Smart default style (CSS)
+* Smart default style (CSS) and compatible with [Social Subscribers Counter](http://wordpress.org/extend/plugins/social-subscribers-counter/) styles
 * Display link (with special CSS classes) for hastags, users, and web link (`nofollow` links)
 * Display twitter's user link and statut's link
 * Display source (web, Tweetdeck, etc.) when it's possible
@@ -74,7 +74,7 @@ Dans l'administration :
 
 Dans votre site :
 
-* Styles par défaut sobres et classes (CSS)
+* Styles par défaut sobres et classes (CSS) et compatible avec les styles de [Social Subscribers Counter](http://wordpress.org/extend/plugins/social-subscribers-counter/)
 * Affiche les liens (avec des classes spéciales) pour les hastags, utilisateurs, et liens classiques (liens en `nofollow`)
 * Affiche un lien vers le statut et le compte twitter
 * Affiche la source du tweet (web, Tweetdeck, etc.) quand c'est possible
@@ -119,10 +119,19 @@ You can use one of the both method :
 Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
 
-Try to visit the link : http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=2 by replacing "USERNAME" with your own username.
-If nothing happens, try with : http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=2
+Try to visit the link : `http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=4` by replacing "USERNAME" with your own username.
+If nothing happens, try with : `http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=4`
 If nothing happens, it's the fault of Twitter API limitation.
 If this link show your 2 last tweets, it's the fault of my script, so contact me.
+
+= Why the widget shows me less tweets than I ask it to show me ? =
+
+Twitter do what it wants to do with its feeds of tweets. This plugin uses both of feeds and controls the two to know which is available. The first available is chosen. If the chosen feed don't have tweets enought (example: 2 tweets whereas you chose 4 tweets to display) the selected stream will not allow you to display all your tweets you want.
+
+You can try to solve a part of the problem by switching two variables in my code (see `wp-content/plugins/juiz-last-tweet-widget/juiz-last-tweet.php`) on lines 346 and 347. You have $search_feed1 and $search_feed2.
+Just change 1 by 2, and 2 by 1.
+
+A future update will allow you to change the feed directly from widget interface.
 
 = You need to custom the design, hide something ? =
 You can use lot of CSS classes and filters to help you in you quest :)
