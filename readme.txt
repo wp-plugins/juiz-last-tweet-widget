@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJ
 Tags: twitter, widget, social, sidebar, last, tweet
 Requires at least: 3.0.1
 Tested up to: 3.4.1
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 
 Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
 
@@ -26,6 +26,7 @@ In admin:
 * Show or hide your avatar
 * Default CSS can be disabled or customized
 * Adjustable period for cache system
+* Can active the action links
 * Can active an auto slideshow script and chose delay between two tweets
 * Shortcode to insert the widget where you want
 
@@ -35,6 +36,7 @@ In your site:
 * Display link (with special CSS classes) for hastags, users, and web link (`nofollow` links)
 * Display twitter's user link and statut's link
 * Display source (web, Tweetdeck, etc.) when it's possible
+* In option: Show action links like Retweet, Reply and Fav
 * In option: little slideshow of one tweet in a list of tweets
 
 For developpers, numerous hooks are available ;)
@@ -47,11 +49,12 @@ For developpers, numerous hooks are available ;)
 * Spannish
 * French
 * Turkish (thanks to [Hakan](http://kazancexpert.com/ "His website")!)
+* Nowegian (thanks to [Nilsel](http://wordpress.org/support/profile/nilsel "His WordPress profile")!)
 
 
--------------
+–––––––––––––––––––––––
 Français
-----
+–––––
 
 Ajoute un widget à votre site pour lister vos derniers tweets, sans JavaScript !
 
@@ -69,6 +72,7 @@ Dans l'administration :
 * Affichez ou cachez votre avatar
 * Styles par défaut personnalisable (peuvent être simplement désactivé ou écrasés)
 * Durée du cache ajustable
+* Possibilité d'activer les liens d'action
 * Possibilité d'activer un diaporama et d'en choisir le delai entre deux tweets
 * Shortcode disponible pour insérer le widget où vous le souhaitez
 
@@ -78,6 +82,7 @@ Dans votre site :
 * Affiche les liens (avec des classes spéciales) pour les hastags, utilisateurs, et liens classiques (liens en `nofollow`)
 * Affiche un lien vers le statut et le compte twitter
 * Affiche la source du tweet (web, Tweetdeck, etc.) quand c'est possible
+* En option : affichage de liens d'action comme Retweeter, Répondre, Fav
 * En option : mini diaporama composé d'un tweet dans votre liste des derniers tweets
 
 Pour les développeurs, de nombreux hooks sont disponibles ;)
@@ -89,7 +94,8 @@ Pour les développeurs, de nombreux hooks sont disponibles ;)
 * Allemand
 * Espagnol
 * Français
-* Turc (merci à [Hakan](http://kazancexpert.com/ "His website") !)
+* Turc (merci à [Hakan](http://kazancexpert.com/ "Son site web") !)
+* Norvégien (merci à [Nilsel](http://wordpress.org/support/profile/nilsel "Son profil WordPress")!)
 
 == Installation ==
 
@@ -109,29 +115,36 @@ You can use one of the both method :
 
 == Screenshots ==
 1. Juiz Last Tweet in action (french interface)
-2. Juiz Last Tweet in the admin
-3. Juiz Last Tweet with avatar displayed
+2. Juiz Last Tweet in the admin (Widget view)
+3. Juiz Last Tweet with avatar displayed and custom CSS
+4. Juiz Last Tweet with avatar and action links displayed
 
 == Frequently Asked Questions ==
 
-= Why the widget show me an error of load for my tweets ? =
-
 Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
+
+= Why the widget show me an error of load for my tweets ? =
 
 Try to visit the link : `http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=4` by replacing "USERNAME" with your own username.
 If nothing happens, try with : `http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=4`
 If nothing happens, it's the fault of Twitter API limitation.
 If this link show your 2 last tweets, it's the fault of my script, so contact me.
 
+Since the v1.1.3 of this plugin, this kind of error **should** only arrive the first time you activate it, if your Twitter flow is not accessible.
+
 = Why the widget shows me less tweets than I ask it to show me ? =
 
 Twitter do what it wants to do with its feeds of tweets. This plugin uses both of feeds and controls the two to know which is available. The first available is chosen. If the chosen feed don't have tweets enought (example: 2 tweets whereas you chose 4 tweets to display) the selected stream will not allow you to display all your tweets you want.
 
-You can try to solve a part of the problem by switching two variables in my code (see `wp-content/plugins/juiz-last-tweet-widget/juiz-last-tweet.php`) on lines 346 and 347. You have $search_feed1 and $search_feed2.
+You can try to solve a part of the problem by switching two variables in my code (see `wp-content/plugins/juiz-last-tweet-widget/juiz-last-tweet.php`) on lines 400 and 401. You have $search_feed1 and $search_feed2.
 Just change 1 by 2, and 2 by 1.
 
-A future update will allow you to change the feed directly from widget interface.
+A future update will allow you to change the feed directly from widget interface (I hope).
+
+= My tweets are not always updated =
+
+Since the v1.1.3, the cache system prefers keep your old tweets instead of displaying a error message due to a lack of tweets inside the Twitter flow. It's a kind of security: old tweets are better than error message :)
 
 = You need to custom the design, hide something ? =
 You can use lot of CSS classes and filters to help you in you quest :)
@@ -139,6 +152,21 @@ See the documentation.html files inside your plugin folder !
 
 
 == Changelog ==
+
+= 1.1.3 =
+* New widget option : action links (Reply, Retweet, Favorite)
+* Better management of the cache system (try to preserve your tweets cached if Twitter clears its flow)
+* New hooks for developer
+* Optimization of hastag search link
+* Fix for a Notice PHP error in WP Debug Mode
+* Fix for shortcode (/!\ Use 0 and 1 instead of false and true now)
+
+= 1.1.2 =
+* New Twitter logo
+* Hastag Regexp updated (better multilingual compatibility)
+* Tested successfully on multiblog
+* Files encoding fixes
+* Some CSS improvement
 
 = 1.1.1 =
 * Little debug fix
