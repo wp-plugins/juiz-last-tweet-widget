@@ -4,12 +4,18 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets)
  * Author: Geoffrey Crofte
- * Version: 1.1.3
+ * Version: 1.1.4
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
 
 /**
+ * = 1.1.4 =
+ * New function jltw( $args )
+ * New function get_jltw ( $args );
+ * Markup fix (remove ID 'juiz_last_tweet_tweetlist', it's a class now)
+ * Conflict between your own CSS and default CSS fixed
+ * Fix for an error message in WP Debug Mode at the first use of the widget
  *
  * = 1.1.3 =
  * New widget option : action links (Reply, Retweet, Favorite)
@@ -83,7 +89,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-define('JUIZ_LTW_VERSION', '1.1.3');
+define('JUIZ_LTW_VERSION', '1.1.4');
 define('JUIZ_LTW_PLUGINBASENAME', dirname(plugin_basename(__FILE__)));
 define('JUIZ_LTW_PLUGINPATH', PLUGINDIR . '/' . JUIZ_LTW_PLUGINBASENAME);
 
@@ -127,7 +133,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			'juiz_last_tweet_default_css' => false,
 			'juiz_last_tweet_action_links' => false,
 			'juiz_last_tweet_auto_slide' => false,
-			'juiz_last_tweet_auto_slide_delay' => 0
+			'juiz_last_tweet_auto_slide_delay' => 0,
+			'juiz_last_tweet_own_css' => ''
 		));
 		
 		$default_css_checked = $action_links_checked = $show_avatar_checked = $auto_slide_checked = ' checked="checked"';
@@ -201,8 +208,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				<input type="checkbox" name="' . $this->get_field_name('juiz_last_tweet_default_css') . '" id="' . $this->get_field_id('juiz_last_tweet_default_css') . '"'.$default_css_checked.' /> <abbr title="' . __('Load a little CSS file with default styles for the widget', 'juiz_ltw') . '">(?)</abbr></label>
 			</p>
 			<p>
-				<label for="' . $this->get_field_id('juiz-ltw-own-css') . '" style="display:inline-block;">' . __('Your own CSS', 'juiz_ltw') . ':  <abbr title="' . __('Write your CSS here to replace or overwrite the default CSS', 'juiz_ltw') . '">(?)</abbr></label>
-				<textarea id="' . $this->get_field_id('juiz-ltw-own-css') . '" rows="7" cols="30" name="' . $this->get_field_name('juiz-ltw-own-css') . '">' . $instance['juiz-ltw-own-css'] . '</textarea>
+				<label for="' . $this->get_field_id('juiz_last_tweet_own_css') . '" style="display:inline-block;">' . __('Your own CSS', 'juiz_ltw') . ':  <abbr title="' . __('Write your CSS here to replace or overwrite the default CSS', 'juiz_ltw') . '">(?)</abbr></label>
+				<textarea id="' . $this->get_field_id('juiz_last_tweet_own_css') . '" rows="7" cols="30" name="' . $this->get_field_name('juiz_last_tweet_own_css') . '">' . $instance['juiz_last_tweet_own_css'] . '</textarea>
 			</p>
 		';
 		
@@ -222,7 +229,8 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			'juiz_last_tweet_default_css' => false,
 			'juiz_last_tweet_action_links' => false,
 			'juiz_last_tweet_auto_slide' => false,
-			'juiz_last_tweet_auto_slide_delay' => 0
+			'juiz_last_tweet_auto_slide_delay' => 0,
+			'juiz_last_tweet_own_css' => ''
 		));
 
 		$instance['plugin-version'] = strip_tags($new_instance['juiz_last_tweet-version']);
@@ -235,7 +243,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		$instance['juiz_last_tweet_action_links'] = $new_instance['juiz_last_tweet_action_links'];
 		$instance['juiz_last_tweet_auto_slide'] = $new_instance['juiz_last_tweet_auto_slide'];
 		$instance['juiz_last_tweet_auto_slide_delay'] = $new_instance['juiz_last_tweet_auto_slide_delay'];
-		$instance['juiz-ltw-own-css'] = $new_instance['juiz-ltw-own-css'];
+		$instance['juiz_last_tweet_own_css'] = $new_instance['juiz_last_tweet_own_css'];
 
 		return $instance;
 	}
@@ -578,7 +586,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 			// display the widget front content (but not immediatly because of cache system)
 			$juiz_ltw_all_tweets= '
 				<div'.$data_delay.' class="juiz_last_tweet_inside'.$need_auto_slide_class.'">
-					<'.$ul.' id="juiz_last_tweet_tweetlist">
+					<'.$ul.' class="juiz_last_tweet_tweetlist">
 						'. jltw_get_the_user_timeline($the_username, $the_nb_tweet, $show_avatar, $show_action_links, $args['juiz_last_tweet_cache_duration']) .'
 					</'.$ul.'>
 					
@@ -616,9 +624,9 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 			
 			if(is_array($array_widgetOptions)) {
 				foreach($array_widgetOptions as $key => $value) {
-					if($value['juiz-ltw-own-css'])
-						$var_sOwnCSS = $value['juiz-ltw-own-css'];
-					elseif($value['juiz_last_tweet_default_css']) {
+					if($value['juiz_last_tweet_own_css'])
+						$var_sOwnCSS = $value['juiz_last_tweet_own_css'];
+					if($value['juiz_last_tweet_default_css']) {
 						$use_default_css = $value['juiz_last_tweet_default_css'];
 					}
 				}
@@ -714,5 +722,23 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 		}
 	}
 	add_shortcode('jltw','sc_4_jltw'); 
+	
+	if( !function_exists('jltw') ) {
+		function jltw( $args ) {
+			echo get_jltw( $args );
+		}
+	}
+	if( !function_exists('get_jltw') ) {
+		function get_jltw ($args = array('username'=>'geoffrey_crofte', 'nb_tweets'=>1, 'avatar'=>false, 'cache'=>120, 'transition'=>false, 'delay'=>8, 'links'=>true)) {
+		
+			$avatar 	= $args['avatar'] 		? 1 : 0;
+			$transition = $args['transition']	? 1 : 0;
+			$links 		= $args['links']		? 1 : 0;
+
+			return do_shortcode('[jltw username="'.$args['username'].'" nb="'.$args['nb_tweets'].'" avatar="'.$avatar.'" cache="'.$args['cache'].'" transition="'.$transition.'" delay="'.$args['delay'].'" links="'.$links.'"]');
+
+		}
+	}
+	
 }
 ?>

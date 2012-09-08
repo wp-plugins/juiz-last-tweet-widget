@@ -1,21 +1,21 @@
 ﻿=== Juiz Last Tweet Widget ===
 Contributors: CreativeJuiz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Tags: twitter, widget, social, sidebar, last, tweet
+Tags: twitter, widget, social, sidebar, last, tweet, shortcode
 Requires at least: 3.0.1
-Tested up to: 3.4.1
-Stable tag: 1.1.3
+Tested up to: 3.4.2
+Stable tag: 1.1.4
 
-Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
+Add a widget to your sidebar to show your latest tweet(s) with style and without JavaScript! Retweet, Favorite and Reply links are available.
 
 == Description ==
 
-Add a widget to your sidebar to show your latest tweet(s) without JavaScript!
+Add a widget to your sidebar to show your latest tweet(s) with style and without JavaScript! Retweet, Favorite and Reply links are available.
 
 This sidebar's widget offer you the possibility to show your last tweet(s) (THE last by default) in your WordPress web site.
 The advantage of this plugin is the absence of JavaScript script to load tweets from twitter : a very good point for your page speed.
 Another advantage is the possibility to use a cache system with an adjustable period.
-You also can show your avatar and customize the CSS.
+You also can show your avatar, action links (Favorite, Reply, Retweet), activate a slideshow of latest tweets, and customize the CSS.
 
 **Features**
 
@@ -39,7 +39,7 @@ In your site:
 * In option: Show action links like Retweet, Reply and Fav
 * In option: little slideshow of one tweet in a list of tweets
 
-For developpers, numerous hooks are available ;)
+For developpers, numerous hooks are available, template function is available (see FAQ for more info) ;)
 
 
 **Languages**
@@ -56,12 +56,12 @@ For developpers, numerous hooks are available ;)
 Français
 –––––
 
-Ajoute un widget à votre site pour lister vos derniers tweets, sans JavaScript !
+Ajoute un widget à votre site pour lister vos derniers tweets, sans JavaScript ! Les liens Retweeter, Répondre et mettre en Favoris sont disponibles.
 
 Ce widget de sidebar vous offre la possibilité d'afficher vos derniers tweets (LE dernier par défaut) dans votre site WordPress.
 L'avantage de ce plugin est l'absence de JavaScript pour charger les tweets depuis Twitter : un très bon point pour la vitesse de vos pages.
 Un autre avantage est la possibilie d'utiliser un système de cache avec une durée ajustable.
-Vous pouvez également afficher votre avatar et personnaliser les CSS.
+Vous pouvez également afficher votre avatar, des liens d'action (Répondre, Retweeter, Favoris), activer un slideshow des derniers tweets et personnaliser les CSS.
 
 **Fonctionnalités**
 
@@ -85,7 +85,7 @@ Dans votre site :
 * En option : affichage de liens d'action comme Retweeter, Répondre, Fav
 * En option : mini diaporama composé d'un tweet dans votre liste des derniers tweets
 
-Pour les développeurs, de nombreux hooks sont disponibles ;)
+Pour les développeurs, de nombreux hooks sont disponibles ainsi qu'une fonction de template (voir la FAQ pour plus d'info) ;)
 
 
 **Langages**
@@ -150,8 +150,19 @@ Since the v1.1.3, the cache system prefers keep your old tweets instead of displ
 You can use lot of CSS classes and filters to help you in you quest :)
 See the documentation.html files inside your plugin folder !
 
+= When I use my own CSS, defaults CSS seems to disappear ? =
+Yeah, sorry, it's a bug. Please, update to 1.1.4 at least.
+
 
 == Changelog ==
+
+= 1.1.4 =
+* New function jltw( $args )
+* New function get_jltw ( $args );
+* Markup fix (remove ID 'juiz_last_tweet_tweetlist', it's a class now)
+* Conflict between your own CSS and default CSS fixed
+* Fix for an error message in WP Debug Mode at the first use of the widget
+
 
 = 1.1.3 =
 * New widget option : action links (Reply, Retweet, Favorite)

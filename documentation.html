@@ -216,6 +216,7 @@
 		<ul>
 			<li><a href="#css-classes">CSS classes</a></li>
 			<li><a href="#shortcode">ShortCode</a></li>
+			<li><a href="#template">Template functions</a></li>
 			<li><a href="#hooks">Hooks</a></li>
 			<li><a href="#faq">FAQ</a></li>
 		</ul>
@@ -312,6 +313,57 @@
 	
 	<p class="important">You <strong>can't desactivate default CSS</strong> when the widget is displayed with a shortcode. You'll need to overwrite it by using your own CSS file.</p>
 	
+
+
+	
+	<h2 id="template">Template functions <span class="since">since 1.1.4</span></h2>
+
+	<p>Template functions allow you to display list of tweets inside any theme template you need.
+		<br />There are two functions: <code>jltw($args)</code> and <code>get_jltw($args)</code></p>
+	
+	<p>Example of use:</p>
+	<pre class="code"><code class="html">&lt;div class="my_tweets_block"&gt;
+	&lt;?php
+		/* your parameters */
+		$jltw_args = array(
+			'username'	=> 'geoffrey_crofte',
+			'nb_tweets'	=> 1,
+			'avatar'	=> false,
+			'cache'		=> 120,
+			'transition'	=> false,
+			'delay'		=> 8,
+			'links'		=> true
+		);
+
+		/* display widget */
+		jltw($jltw_args);
+	?&gt;
+&lt;/div&gt;</code></pre>
+
+	<p><code>jltw()</code> makes an <code>echo</code>, if you need to save data in a variable, use <code>get_jltw()</code>.</p>
+
+	<p>Example of use:</p>
+	<pre class="code"><code class="html">&lt;?php
+	/* your parameters */
+	$jltw_args = array(
+		'username'	=> 'creativejuiz',
+		'nb_tweets'	=> 2,
+		'avatar'	=> true,
+		'cache'		=> 1600,
+		'transition'	=> true,
+		'delay'		=> 10,
+		'links'		=> false
+	);
+
+	/* set variable */
+
+	$list_of_tweets = get_jltw($jltw_args);
+
+	/* more later */
+	echo $list_of_tweets;
+?&gt;</code></pre>
+
+
 	
 	<h2 id="hooks">Hooks <span class="since">since 1.1.0</span></h2>
 	
@@ -506,12 +558,19 @@ add_filter('juiz_ltw_target_action_links_attr', 'change_ltw_target_attr_for_acti
 		<dd>
 			You certainly host your site in a PHP4 installation&hellip;
 		</dd>
+
+		<dt>
+			When I use my own CSS, defaults CSS seems to disappear ? <span class="since">before 1.1.4</span>
+		</dt>
+		<dd>
+			Yeah, sorry, it's a bug. Please, update to 1.1.4 at least&hellip;
+		</dd>
 	</dl>
 	
 	<div id="footer"><p>Documentation for your life easier !<br />
 	<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Go to Paypal Website" class="button" target="_blank">Donate</a>
 	<a href="https://twitter.com/intent/tweet?hashtags=CreativeJuiz&amp;text=I%20use%20Juiz%20Last%20Tweet%20Widget%20on%20my%20WordPress%20blog,%20awesome!%20&amp;url=http%3A%2F%2Fwordpress.org%2Fextend%2Fplugins%2Fjuiz-last-tweet-widget%2F&amp;via=geoffrey_crofte" target="_blank" class="tweet button">Tweet it</a></p>
-	<p class="last-update">v 1.1.3<br />Last update: 2012, 26 August</p>
+	<p class="last-update">v 1.1.4<br />Last update: 2012, 8 September</p>
 	</div>
 </body>
 </html>
