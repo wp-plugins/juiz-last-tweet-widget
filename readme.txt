@@ -3,8 +3,8 @@ Contributors: CreativeJuiz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: twitter, widget, social, sidebar, last, tweet, shortcode
 Requires at least: 3.0.1
-Tested up to: 3.4.2
-Stable tag: 1.1.4
+Tested up to: 3.5.1
+Stable tag: 1.2.0
 
 Add a widget to your sidebar to show your latest tweet(s) with style and without JavaScript! Retweet, Favorite and Reply links are available.
 
@@ -29,6 +29,7 @@ In admin:
 * Can active the action links
 * Can active an auto slideshow script and chose delay between two tweets
 * Shortcode to insert the widget where you want
+* Included: Tutorial to create a Twitter plugin (needed for API 1.1)
 
 In your site:
 
@@ -50,6 +51,11 @@ For developpers, numerous hooks are available, template function is available (s
 * French
 * Turkish (thanks to [Hakan](http://kazancexpert.com/ "His website")!)
 * Nowegian (thanks to [Nilsel](http://wordpress.org/support/profile/nilsel "His WordPress profile")!)
+* Italian (thanks to [superciccio14](http://wordpress.org/support/profile/superciccio14 "His WordPress profile")!)
+* Portuguese (Brazilian) (thanks to [trindademeier](http://wordpress.org/support/profile/trindademeier "His WordPress profile")!)
+
+
+Thanks to <a href="http://screenfeed.fr">Greg</a> and <a href="http://jmperso.eu/">Julien</a> for your advices in some parts of this plugin ;)
 
 
 –––––––––––––––––––––––
@@ -75,6 +81,7 @@ Dans l'administration :
 * Possibilité d'activer les liens d'action
 * Possibilité d'activer un diaporama et d'en choisir le delai entre deux tweets
 * Shortcode disponible pour insérer le widget où vous le souhaitez
+* Inclus : un mini-tutoriel pour créer une extension Twitter (nécessaire pour l'API 1.1)
 
 Dans votre site :
 
@@ -95,7 +102,11 @@ Pour les développeurs, de nombreux hooks sont disponibles ainsi qu'une fonction
 * Espagnol
 * Français
 * Turc (merci à [Hakan](http://kazancexpert.com/ "Son site web") !)
-* Norvégien (merci à [Nilsel](http://wordpress.org/support/profile/nilsel "Son profil WordPress")!)
+* Norvégien (merci à [Nilsel](http://wordpress.org/support/profile/nilsel "Son profil WordPress") !)
+* Italien (merci à [superciccio14](http://wordpress.org/support/profile/superciccio14 "Son profil WordPress") !)
+* Portugais (Brésilien) (merci à [trindademeier](http://wordpress.org/support/profile/trindademeier "His WordPress profile")
+
+Merci à <a href="http://screenfeed.fr">Greg</a> et <a href="http://jmperso.eu/">Julien</a> pour vos conseils dans certaines parties du code de ce plugin ;)
 
 == Installation ==
 
@@ -118,6 +129,7 @@ You can use one of the both method :
 2. Juiz Last Tweet in the admin (Widget view)
 3. Juiz Last Tweet with avatar displayed and custom CSS
 4. Juiz Last Tweet with avatar and action links displayed
+5. The new admin page for 1.2.0 (translators are welcome :p)
 
 == Frequently Asked Questions ==
 
@@ -156,12 +168,28 @@ Yeah, sorry, it's a bug. Please, update to 1.1.4 at least.
 
 == Changelog ==
 
+= 1.2.0 =
+* Twitter API 1.1 compatible
+* New page options available (for Twitter API 1.1 compatibility)
+* New shortcode `[tweets]` added
+* New function `get_the_tweets( $args )` and `the_tweets( $args )` available
+* New (Brazilian) portuguese (thanks to [trindademeier](http://wordpress.org/support/profile/trindademeier "His WordPress profile")
+* Tested for WordPress 3.5.1
+
+= 1.1.5 =
+* Tested for WordPress 3.5
+* New Twitter API 1.1 (fallback on Twitter search feed in case of Rate limit exceeded)
+* Some new CSS classes (see documentation)
+* Some CSS improvement
+* Italian Translation by [superciccio14](http://wordpress.org/support/profile/superciccio14 "Son profil WordPress")
+
 = 1.1.4 =
 * New function jltw( $args )
 * New function get_jltw ( $args );
 * Markup fix (remove ID 'juiz_last_tweet_tweetlist', it's a class now)
 * Conflict between your own CSS and default CSS fixed
 * Fix for an error message in WP Debug Mode at the first use of the widget
+* Nowegian translation
 
 
 = 1.1.3 =
@@ -228,6 +256,9 @@ Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
 
 == Upgrade Notice ==
+
+= 1.1.5 =
+Update for new CSS fixes and languages support
 
 = 1.1.1 =
 Need an update if you downloaded 1.1.0

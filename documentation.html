@@ -243,9 +243,15 @@
        
 /* The user avatar image */  
 .juiz_last_tweet_widget .user_avatar img { }  
-     
+
+/* A tweet (since 1.1.5) */
+.juiz_last_tweet_item { }
+
 /* The tweet content */  
-.juiz_lt_content { }  
+.juiz_lt_content { } 
+
+/* The part after the tweet content (since 1.1.5) */
+juiz_last_tweet_footer_item { }
    
 /* The links inside a tweet */  
 .juiz_last_tweet_tweetos { }  
@@ -285,9 +291,14 @@
 	<h2 id="shortcode">ShortCode <span class="since">since 1.1.0</span></h2>
 	
 	<p>This plugin has a Shortcode, a kind of BBcode, that allows you to display this widget where you want.<br />
-	This shortcode uses the keyword jltw (Juiz Last Tweet Widget), a particular word to oust any conflict with other plugins.</p>
+	This shortcode uses the keyword <code>jltw</code> (Juiz Last Tweet Widget), a particular word to oust any conflict with other plugins.<br />
+	You can use the keyword <code>tweets</code>, also. (<span class="since">since 1.2.0</span>)</p>
 	
 	<pre class="code"><code class="html">[jltw]</code></pre>
+	
+	or since 1.2.0
+	
+	<pre class="code"><code class="html">[tweets]</code></pre>
 	
 	<p>Used in a post, this shortcode display the widget.<br />
 	Morever, options are available. The list of options is the following :</p>
@@ -362,6 +373,8 @@
 	/* more later */
 	echo $list_of_tweets;
 ?&gt;</code></pre>
+
+	<p>Since 1.2.0 you can use <code>the_tweets( $args )</code> and <code>get_the_tweets( $args )</code> instead of <code>jltw( $args )</code> and <code>get_jltw( $args )</code></p>
 
 
 	
@@ -515,6 +528,30 @@ if( !function_exists('change_ltw_target_attr_for_action_links')) {
 add_filter('juiz_ltw_target_action_links_attr', 'change_ltw_target_attr_for_action_links');
 ?&gt;</code></pre>
 
+<h3>Hook : <code>juiz_ltw_twitter_feed_not_loadable</code> <span class="since">(since 1.1.5)</span></h3>
+	
+	<p>Change the "The RSS feed for this twitter account is not loadable for the moment." error message<br /> Example:</p>
+	<pre class="code"><code class="php">&lt;?php
+if( !function_exists('change_juiz_ltw_twitter_feed_not_loadable')) {
+	function change_juiz_ltw_twitter_feed_not_loadable($target) {
+		return 'Tweets coming soon&hellip;';
+	}
+}
+add_filter('juiz_ltw_twitter_feed_not_loadable', 'change_juiz_ltw_twitter_feed_not_loadable');
+?&gt;</code></pre>
+
+<h3>Hook : <code>juiz_ltw_twitter_has_a_problem</code> <span class="since">(since 1.1.5)</span></h3>
+	
+	<p>Change the "Twitter has a problem with your RSS feed&hellip;" error message<br /> Example:</p>
+	<pre class="code"><code class="php">&lt;?php
+if( !function_exists('change_juiz_ltw_twitter_has_a_problem')) {
+	function change_juiz_ltw_twitter_has_a_problem($target) {
+		return ''; // to remove this sentence for example
+	}
+}
+add_filter('juiz_ltw_twitter_has_a_problem', 'change_juiz_ltw_twitter_has_a_problem');
+?&gt;</code></pre>
+
 
 	<h2 id="faq">FAQ</h2>
 	
@@ -570,7 +607,7 @@ add_filter('juiz_ltw_target_action_links_attr', 'change_ltw_target_attr_for_acti
 	<div id="footer"><p>Documentation for your life easier !<br />
 	<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Go to Paypal Website" class="button" target="_blank">Donate</a>
 	<a href="https://twitter.com/intent/tweet?hashtags=CreativeJuiz&amp;text=I%20use%20Juiz%20Last%20Tweet%20Widget%20on%20my%20WordPress%20blog,%20awesome!%20&amp;url=http%3A%2F%2Fwordpress.org%2Fextend%2Fplugins%2Fjuiz-last-tweet-widget%2F&amp;via=geoffrey_crofte" target="_blank" class="tweet button">Tweet it</a></p>
-	<p class="last-update">v 1.1.4<br />Last update: 2012, 8 September</p>
+	<p class="last-update">v 1.2.0<br />Last update: 2013, 31 March</p>
 	</div>
 </body>
 </html>

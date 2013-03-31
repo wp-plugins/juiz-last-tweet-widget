@@ -1,31 +1,33 @@
-jQuery(document).ready(function(){
+jQuery(document).ready(function($){
 
-	if( jQuery('.juiz_ltw_autoslide').length > 0 ) {
+	if( $('.juiz_ltw_autoslide').length > 0 ) {
 	
-		jQuery('.juiz_ltw_autoslide').each(function(){
+		$('.juiz_ltw_autoslide').each(function(){
 		
-			var $parent = jQuery(this);
+			var $parent = $(this);
 			var $tweets = $parent.find('li');
 			var ltw_the_delay = $parent.data('delay');
 			var ltw_interval;
 			
 			if ( $tweets.length > 1 ) {
-				jQuery($tweets).filter(':not(":first")').hide();
-				jQuery($tweets).filter(':first').addClass('current');
+				$($tweets).filter(':not(":first")').hide();
+				$($tweets).filter(':first').addClass('current');
 				
-				jQuery($parent).addClass('hasjs');
+				$($parent).addClass('hasjs');
 				$parent.prepend($parent.find('.user_avatar'));
 				$parent.find('ul .user_avatar').remove();
 				
 				
 				function juiz_ltw_next_one() {
-					
-					if( jQuery($parent).find('.current').next('li').length > 0 ) {
-						jQuery($parent).find('.current').hide().removeClass('current').next('li').fadeIn(400).addClass('current');
+
+					$current_one = $($parent).find('.current');
+
+					if( $current_one.next('li').length > 0 ) {
+						$current_one.hide().removeClass('current').next('li').fadeIn(400).addClass('current');
 					}
 					else {
-						jQuery($parent).find('.current').hide().removeClass('current');
-						jQuery($tweets).filter(':first').addClass('current').fadeIn(400);
+						$current_one.hide().removeClass('current');
+						$($tweets).filter(':first').addClass('current').fadeIn(400);
 					}
 						
 				}
