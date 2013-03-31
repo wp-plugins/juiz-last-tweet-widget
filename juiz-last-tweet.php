@@ -96,8 +96,8 @@ function juiz_ltw_admin_notices(){
 			|| $jltw_options['oauth_token_secret'] == '') 
 		{
 			echo '<div class="error">
-				<h3>'.__("Don't worry!",'jltw_lang').'</h3>
-				<p>'.sprintf(__('But you need to %scomplete the %sJuiz Last Tweet Widget%s options page%s if you want to display your latest tweets.','jltw_lang'), '<a href="'.JUIZ_LTW_SETTINGS_URL.'">', '<strong>', '</strong>','</a>').'</p>
+				<h3>'.__("Don't worry!",'juiz_ltw').'</h3>
+				<p>'.sprintf(__('But you need to %scomplete the %sJuiz Last Tweet Widget%s options page%s if you want to display your latest tweets.','juiz_ltw'), '<a href="'.JUIZ_LTW_SETTINGS_URL.'">', '<strong>', '</strong>','</a>').'</p>
 			</div>';
 		}
 	}
