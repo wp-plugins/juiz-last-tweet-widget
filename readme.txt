@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJ
 Tags: twitter, widget, social, sidebar, last, tweet, shortcode
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 
 Add a widget to your sidebar to show your latest tweet(s) with style and without JavaScript! Retweet, Favorite and Reply links are available.
 
@@ -168,6 +168,10 @@ Yeah, sorry, it's a bug. Please, update to 1.1.4 at least.
 
 == Changelog ==
 
+= 1.2.1 =
+* Commit fix, missing inc/ folder included (sorry!)
+* Some PHP optimization
+
 = 1.2.0 =
 * Twitter API 1.1 compatible
 * New page options available (for Twitter API 1.1 compatibility)
@@ -256,6 +260,9 @@ Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+You come from 1.2.0 ? You need this update
 
 = 1.1.5 =
 Update for new CSS fixes and languages support

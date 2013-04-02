@@ -153,7 +153,7 @@ function juiz_ltw_setting_radio_default_style() {
 	$options = get_option( JUIZ_LTW_SETTING_NAME );
 
 	if ( is_array($options) ) {
-		$n0 = $n1;
+		$n0 = $n1 = "";
 		${'n'.$options['default_styles']} = " checked='checked'";
 	
 		echo '<p class="juiz_ltw_options">
@@ -175,7 +175,7 @@ function juiz_ltw_setting_radio_rss_change() {
 
 	$options = get_option( JUIZ_LTW_SETTING_NAME );
 	if ( is_array($options) ) {
-		$n0 = $n1;
+		$n0 = $n1 = "";
 		${'n'.$options['change_rss_feed']} = " checked='checked'";
 	
 		echo '<p class="juiz_ltw_options">
