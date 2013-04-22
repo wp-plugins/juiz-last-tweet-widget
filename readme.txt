@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJ
 Tags: twitter, widget, social, sidebar, last, tweet, shortcode
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 Add a widget to your sidebar to show your latest tweet(s) with style and without JavaScript! Retweet, Favorite and Reply links are available.
 
@@ -49,13 +49,13 @@ For developpers, numerous hooks are available, template function is available (s
 * German
 * Spannish
 * French
-* Turkish (thanks to [Hakan](http://kazancexpert.com/ "His website")!)
+* Turkish (thanks to [Hakaner](http://hakanertr.wordpress.com/ "His website")!)
 * Nowegian (thanks to [Nilsel](http://wordpress.org/support/profile/nilsel "His WordPress profile")!)
 * Italian (thanks to [superciccio14](http://wordpress.org/support/profile/superciccio14 "His WordPress profile")!)
 * Portuguese (Brazilian) (thanks to [trindademeier](http://wordpress.org/support/profile/trindademeier "His WordPress profile")!)
 
 
-Thanks to <a href="http://screenfeed.fr">Greg</a> and <a href="http://jmperso.eu/">Julien</a> for your advices in some parts of this plugin ;)
+Thanks to <a href="http://screenfeed.fr">Greg</a> and <a href="http://tweetpress.fr/">Julien</a> for your advices in some parts of this plugin ;)
 
 
 –––––––––––––––––––––––
@@ -101,12 +101,12 @@ Pour les développeurs, de nombreux hooks sont disponibles ainsi qu'une fonction
 * Allemand
 * Espagnol
 * Français
-* Turc (merci à [Hakan](http://kazancexpert.com/ "Son site web") !)
+* Turc (merci à [Hakaner](http://hakanertr.wordpress.com/ "Son site web") !)
 * Norvégien (merci à [Nilsel](http://wordpress.org/support/profile/nilsel "Son profil WordPress") !)
 * Italien (merci à [superciccio14](http://wordpress.org/support/profile/superciccio14 "Son profil WordPress") !)
 * Portugais (Brésilien) (merci à [trindademeier](http://wordpress.org/support/profile/trindademeier "His WordPress profile")
 
-Merci à <a href="http://screenfeed.fr">Greg</a> et <a href="http://jmperso.eu/">Julien</a> pour vos conseils dans certaines parties du code de ce plugin ;)
+Merci à <a href="http://screenfeed.fr">Greg</a> et <a href="http://tweetpress.fr/">Julien</a> pour vos conseils dans certaines parties du code de ce plugin ;)
 
 == Installation ==
 
@@ -136,8 +136,15 @@ You can use one of the both method :
 Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
 
+= The Twitter Bird image doesn't appear! What's happened? =
+Sorry, I don't know. Try to uninstall/install the plugin or just pick up the image in the <a href="http://plugins.svn.wordpress.org/juiz-last-tweet-widget/trunk/img/">svn repository</a>.
+
 = Why the widget show me an error of load for my tweets ? =
 
+First: do you have the latest version of this plugin?
+Second: did you find the settings page, create your Twitter plugin?
+
+Then, if it's ok the both previous step:
 Try to visit the link : `http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=4` by replacing "USERNAME" with your own username.
 If nothing happens, try with : `http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=4`
 If nothing happens, it's the fault of Twitter API limitation.
@@ -167,6 +174,13 @@ Yeah, sorry, it's a bug. Please, update to 1.1.4 at least.
 
 
 == Changelog ==
+
+= 1.2.2 =
+* New classes in tweets list (`.jltw_item_first`, `.jltw_item_last`, `.jltw_item_alone`, `.jltw_item_[n]`)
+* JS optimization: 'current' class become 'jltw_current'
+* Twitter oAuth optimization (load class only if doesn't exist)
+* Translation update (Turkish, thanks to [Hakaner](http://hakanertr.wordpress.com/ "His website"))
+* Readme.txt correction
 
 = 1.2.1 =
 * Commit fix, missing inc/ folder included (sorry!)
@@ -223,7 +237,7 @@ Yeah, sorry, it's a bug. Please, update to 1.1.4 at least.
 * Better control and switching of Twitter RSS feed
 * Better links parser
 * Some fixes with CSS (special case)
-* Turkish translation by [Hakan](http://kazancexpert.com/ "His website")
+* Turkish translation by [Hakaner](http://hakanertr.wordpress.com/ "His website")
 
 = 1.0.4 =
 * Optionnal autoslide tweets, one by one (use JavaScript)
@@ -260,9 +274,6 @@ Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
 
 == Upgrade Notice ==
-
-= 1.2.1 =
-You come from 1.2.0 ? You need this update
 
 = 1.1.5 =
 Update for new CSS fixes and languages support

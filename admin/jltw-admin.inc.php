@@ -211,7 +211,7 @@ function juiz_ltw_settings_page() {
 				submit_button();
 			?>
 		</form>
-
+		
 		<p class="juiz_bottom_links">
 			<em><?php _e('Like it? Support this plugin! Thank you.', 'juiz_ltw') ?></em>
 			<a class="juiz_paypal" target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=P39NJPCWVXGDY&amp;lc=FR&amp;item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"><?php _e('Donate', 'juiz_ltw') ?></a>

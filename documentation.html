@@ -247,6 +247,18 @@
 /* A tweet (since 1.1.5) */
 .juiz_last_tweet_item { }
 
+/* Position of a tweet (since 1.2.2) */
+.jltw_item_first { }
+.jltw_item_last { }
+
+/* if is alone */
+.jltw_item_alone { }
+
+/* if not first or last one */
+.jltw_item_2 { }
+.jltw_item_3 { }
+etc&hellip;
+
 /* The tweet content */  
 .juiz_lt_content { } 
 
@@ -557,9 +569,18 @@ add_filter('juiz_ltw_twitter_has_a_problem', 'change_juiz_ltw_twitter_has_a_prob
 	
 	<dl>
 		<dt>
-			Why the widget show me an error of load for my tweets ? <span class="since">since 1.0.1</span>
+			The Twitter Bird image doesn't appear! What's happened?
 		</dt>
 		<dd>
+			Sorry, I don't know. Try to uninstall/install the plugin or just pick up the image in the <a href="http://plugins.svn.wordpress.org/juiz-last-tweet-widget/trunk/img/">svn repository</a>.
+		</dd>
+		<dt>
+			Why the widget show me an error of load for my tweets ? <span class="since">since 1.0.1</span>
+		</dt>
+		<dd>First: do you have the latest version of this plugin?<br />
+			Second: did you find the settings page, create your Twitter plugin?<br />
+			<br />
+			Then, if it's ok the both previous step:
 			Try to visit the link : <code>http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=2</code> by replacing "USERNAME" with your own username.
 			<br />If nothing happens, try with : <code>http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=2</code><br />
 			If nothing happens, it's the fault of Twitter API limitation.
@@ -607,7 +628,7 @@ add_filter('juiz_ltw_twitter_has_a_problem', 'change_juiz_ltw_twitter_has_a_prob
 	<div id="footer"><p>Documentation for your life easier !<br />
 	<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Go to Paypal Website" class="button" target="_blank">Donate</a>
 	<a href="https://twitter.com/intent/tweet?hashtags=CreativeJuiz&amp;text=I%20use%20Juiz%20Last%20Tweet%20Widget%20on%20my%20WordPress%20blog,%20awesome!%20&amp;url=http%3A%2F%2Fwordpress.org%2Fextend%2Fplugins%2Fjuiz-last-tweet-widget%2F&amp;via=geoffrey_crofte" target="_blank" class="tweet button">Tweet it</a></p>
-	<p class="last-update">v 1.2.0<br />Last update: 2013, 31 March</p>
+	<p class="last-update">v 1.2.2<br />Last update: 2013, 23 April</p>
 	</div>
 </body>
 </html>

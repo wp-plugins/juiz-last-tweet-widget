@@ -4,7 +4,7 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/wordpress/wordpress-plugin-afficher-derniers-tweets-widget
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets) - <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Thank you!">Donate to contribute</a>
  * Author: Geoffrey Crofte
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
@@ -30,8 +30,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **/
 
-define( 'JUIZ_LTW_PLUGIN_NAME',	 	'Juiz Social Post Sharer' );
-define( 'JUIZ_LTW_VERSION', 		'1.2.1' );
+define( 'JUIZ_LTW_PLUGIN_NAME',	 	'Juiz Last Tweet Widget' );
+define( 'JUIZ_LTW_VERSION', 		'1.2.2' );
 define( 'JUIZ_LTW_FILE',		 	__FILE__ );
 define( 'JUIZ_LTW_DIRNAME', 		basename( dirname( __FILE__ ) ) );
 define( 'JUIZ_LTW_PLUGIN_URL',	 	plugin_dir_url( __FILE__ ));
@@ -411,7 +411,10 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					$is_api_1_1 = $the_best_feed = false;
 
 					// new API 1.1
-					require_once ('inc/twitteroauth.php');
+					if ( !class_exists('TwitterOAuth')) {
+						require_once ('inc/twitteroauth.php');
+					}
+					
 					$options = get_option( JUIZ_LTW_SETTING_NAME );
 
 					$consumer_key 		= $options['consumer_key'];
@@ -501,6 +504,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						$rss_i = $is_api_1_1 ? $api_1_1_content : $sf_rss -> get_items(0, $max_i);
 
 						$i = 0;
+
 						foreach ( $rss_i as $tweet ) {
 							
 							$author = $i_source = $avatar = $html_avatar = $new_attrs = '';
@@ -598,10 +602,25 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 							$li = apply_filters('juiz_ltw_each_item_tag', 'li'); // @filters
 
-							$hint_class = $is_api_1_1 ? ' juiz_ltw_api_1_1' : ' juiz_ltw_feed_'.$the_best_feed;
+							$hint_class = $is_api_1_1 ? ' jltw_api_1_1' : ' jltw_feed_'.$the_best_feed;
+
+							$item_pos_class = " jltw_item_alone";
+							if ($nb_tweets > 1) {
+								switch ($i) {
+									case 1;
+										$item_pos_class = " jltw_item_first";
+										break;
+									case $nb_tweets;
+										$item_pos_class = " jltw_item_last";
+										break;
+									default;
+										$item_pos_class = " jltw_item_".$i;
+										break;
+								}
+							}
 							
 							$html_result_temp = '
-								<'.$li.' class="juiz_last_tweet_item'.$hint_class.'">
+								<'.$li.' class="juiz_last_tweet_item'.$hint_class.$item_pos_class.'">
 									'.$html_avatar.'
 									<span class="juiz_lt_content">' . $i_title . '</span>
 									<span class="juiz_last_tweet_footer_item">
