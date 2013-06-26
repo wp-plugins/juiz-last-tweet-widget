@@ -4,7 +4,7 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/wordpress/wordpress-plugin-afficher-derniers-tweets-widget
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets) - <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Thank you!">Donate to contribute</a>
  * Author: Geoffrey Crofte
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 define( 'JUIZ_LTW_PLUGIN_NAME',	 	'Juiz Last Tweet Widget' );
-define( 'JUIZ_LTW_VERSION', 		'1.3.0' );
+define( 'JUIZ_LTW_VERSION', 		'1.3.1' );
 define( 'JUIZ_LTW_FILE',		 	__FILE__ );
 define( 'JUIZ_LTW_DIRNAME', 		basename( dirname( __FILE__ ) ) );
 define( 'JUIZ_LTW_PLUGIN_URL',	 	plugin_dir_url( __FILE__ ));
@@ -677,11 +677,11 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 					$juiz_last_tweet_css .= '<style type="text/css"><!--';
 
 					if ( isset( $general_plugin_options['links_colors']['hastag'] ) && preg_match( $regexp, $general_plugin_options['links_colors']['hastag'] )  )
-						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_hastag {color:'.$general_plugin_options['links_colors']['hastag'].';}';
+						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_hastag {color:'.$general_plugin_options['links_colors']['hastag'].'!important;}';
 					if ( isset( $general_plugin_options['links_colors']['username'] ) && preg_match( $regexp, $general_plugin_options['links_colors']['username'] ))
-						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_tweetos {color:'.$general_plugin_options['links_colors']['username'].';}';
+						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_tweetos {color:'.$general_plugin_options['links_colors']['username'].'!important;}';
 					if ( isset( $general_plugin_options['links_colors']['weblink'] ) && preg_match( $regexp, $general_plugin_options['links_colors']['weblink'] ))
-						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_url {color:'.$general_plugin_options['links_colors']['weblink'].';}';
+						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_url {color:'.$general_plugin_options['links_colors']['weblink'].'!important;}';
 
 					$juiz_last_tweet_css .= "\n\r".'--></style>';
 				}
