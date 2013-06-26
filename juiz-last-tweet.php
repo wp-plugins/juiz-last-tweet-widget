@@ -4,13 +4,11 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/wordpress/wordpress-plugin-afficher-derniers-tweets-widget
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets) - <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Thank you!">Donate to contribute</a>
  * Author: Geoffrey Crofte
- * Version: 1.2.2
+ * Version: 1.3.0
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
-/* 
-	Changelog => See readme.txt
-*/
+
 /**
 Copyright 2011 -  Geoffrey Crofte  (email : support@creativejuiz.com)
 
@@ -30,8 +28,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **/
 
+
+
 define( 'JUIZ_LTW_PLUGIN_NAME',	 	'Juiz Last Tweet Widget' );
-define( 'JUIZ_LTW_VERSION', 		'1.2.2' );
+define( 'JUIZ_LTW_VERSION', 		'1.3.0' );
 define( 'JUIZ_LTW_FILE',		 	__FILE__ );
 define( 'JUIZ_LTW_DIRNAME', 		basename( dirname( __FILE__ ) ) );
 define( 'JUIZ_LTW_PLUGIN_URL',	 	plugin_dir_url( __FILE__ ));
@@ -66,20 +66,18 @@ function juiz_ltw_activation() {
 
 	if( !$jltw_options = get_option( JUIZ_LTW_SETTING_NAME ) ) {
 		update_option( JUIZ_LTW_SETTING_NAME, array(
-			'consumer_key' 		=> '',
-			'consumer_secret' 	=> '',
-			'oauth_token'		=> '',
-			'oauth_token_secret'=> '',
-			'change_rss_feed'	=> 0,
-			'default_styles'	=> 1,
-			//for the next updates... chuuuut, keep it secret ;)
+			'consumer_key' 			=> '',
+			'consumer_secret' 		=> '',
+			'oauth_token'			=> '',
+			'oauth_token_secret'	=> '',
+			'default_styles'		=> 1,
 			'css_style_version'		=> 1,
-			'show_nb_of_followers'	=> 0,
-			'flat_design_bgcolor'	=> '',
+			'show_nb_of_followers'	=> 0, //for the next updates... chuuuut, keep it secret ;)
+			'flat_design_bgcolor'	=> '#',
 			'links_colors'			=> array(
-				'hastag'	=> '',
-				'username'	=> '',
-				'weblink'	=> ''
+				'hastag'	=> '#',
+				'username'	=> '#',
+				'weblink'	=> '#'
 			)
 		));
 	}
@@ -294,12 +292,15 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		 * change the default feed cache recreation period
 		 */
 		 
+		/*
+		//comment for the moment, maybe next step will be a definitive removing
 		if ( !function_exists ('juiz_ltw_filter_handler') ) {
 			function juiz_ltw_filter_handler ( $seconds ) {
 				return intval(60); //seconds
 			}
 		}
 		add_filter( 'wp_feed_cache_transient_lifetime' , 'juiz_ltw_filter_handler' ); 
+		*/
 
 		
 		 
@@ -357,7 +358,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 				// replace user link
 				$i_text = preg_replace('#@([a-zA-z0-9_]+)#i','<a href="http://twitter.com/$1" class="juiz_last_tweet_tweetos" rel="nofollow" target="'.$target4a.'">@$1</a>',$i_text);
 				// replace hash tag search link ([a-zA-z0-9_] recently replaced by \S)
-				$i_text = preg_replace('#[^&]\#(\S+)#i',' <a href="http://twitter.com/#!/search/?src=hash&amp;q=%23$1" class="juiz_last_tweet_hastag" rel="nofollow" target="'.$target4a.'">#$1</a>',$i_text); // old url was : /search/%23$1
+				$i_text = preg_replace('#[^&]\#(\S+)#i',' <a href="http://twitter.com/search/?src=hash&amp;q=%23$1" class="juiz_last_tweet_hastag" rel="nofollow" target="'.$target4a.'">#$1</a>',$i_text); // old url was : /search/%23$1
 				// remove start username
 				$i_text = preg_replace( '#^'.$username.': #i', '', $i_text );
 				
@@ -427,148 +428,63 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					$search_feed3 = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=".$username."&count=".intval($nb_tweets); 
 					$api_1_1_content = $connection->get($search_feed3);
 
-					if (is_array($api_1_1_content) AND isset($api_1_1_content[0] -> id)) {
-						$is_api_1_1 = true;
-					}
-					else {
-						if (isset($api_1_1_content->errors[0] -> code)) echo '<!-- JLTW Twitter API 1.1 error code : '. $api_1_1_content->errors[0] -> code . ' ('. $api_1_1_content->errors[0] -> message . ')-->';
-						// include of WP's feed functions
-						include_once(ABSPATH . WPINC . '/feed.php');
-						
-						// if this option if checked...
-						$first_feed = $options['change_rss_feed'];
-						// reverse feed1 and feed2, and keep fallback...
-						$search_feed1 = $first_feed ? "http://search.twitter.com/search.rss?q=from%3A".$username."&rpp=".intval($nb_tweets) : "http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=".$username."&count=".intval($nb_tweets);
-						$search_feed2 = $first_feed ? "http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=".$username."&count=".intval($nb_tweets) : "http://search.twitter.com/search.rss?q=from%3A".$username."&rpp=".intval($nb_tweets);
 					
-						// get the better feed
-						// try with the first one
-						
-						$sf_rss = fetch_feed ( $search_feed1 );
-						if ( is_wp_error($sf_rss) ) {
-							// if first one is not ok, try with the second one
-							$sf_rss = fetch_feed ( $search_feed2 );
+
+					/*
+					 *	version 1.3.0 removes all mentions of API 1.0, no longer activated by Twitter.
+					 */
+
+
+
+					// if connection is ok
+					if ( is_array( $api_1_1_content ) AND isset( $api_1_1_content[0] -> id ) ) {
+
+						$rss_i = $api_1_1_content;
+
+						// avatar
+						$author = $rss_i[0] -> user -> screen_name;
+						$avatar = $rss_i[0] -> user -> profile_image_url;
+						$html_avatar = $new_attrs = '';
+
+						if ($show_avatar && $avatar) { 
+							$avatar_attr = array(
+								'title'		 => __('Follow', 'juiz_ltw') . ' @'.$username.' ' . __('on twitter.', 'juiz_ltw'),
+								'href'		 => esc_url( 'http://twitter.com/' . $username ),
+								'src'		 => esc_url( $avatar ),
+								'alt'		 => $author,
+								'width'		 => '48',
+								'height'	 => '48',
+								'aria-hidden'=> 'true'
+							);
 							
-							if ( is_wp_error($sf_rss) ) $the_best_feed = false;
-							else $the_best_feed = '2';
-						}
-						else $the_best_feed = '1';
-						
-						// if one of them is readable, check if we have tweets (thank you Twitter =_=)
-						if ( $the_best_feed ) {
-							
-							// in case of...
-							// if we already have one tweet at least (finded with the juiz_lt_content class), keep those tweet, don't show message error.
-							$twitter_fail = $is_tweet_cached ? $html_result : apply_filters('juiz_ltw_twitter_has_a_problem',__('Twitter has a problem with your RSS feed&hellip;', 'juiz_ltw'));
-						
-							$max_i = $sf_rss -> get_item_quantity($nb_tweets);
-							
-							// if the first feed return zero item, and if the feed is not already the second one, try with the second
-							if ( $max_i == 0) {
-								if ($the_best_feed!='2') {
-									$sf_rss = fetch_feed ( $search_feed2 );
-									
-									if ( !is_wp_error($sf_rss) ) {
-										$max_i = $sf_rss -> get_item_quantity($nb_tweets);
-										if ( $max_i != 0 ) $the_best_feed = true;
-										else {
-											$html_result = $twitter_fail;
-											$the_best_feed = false;
-										}
-									}
-									else {
-										$html_result = $twitter_fail;
-										$the_best_feed = false;
-									}
-								}
-								else {
-									$html_result = $twitter_fail;
-									$the_best_feed = false;
-								}
-							}
-							else {
-								// all right
-								$the_best_feed = true;
+							$avatar_attr = apply_filters('juiz_ltw_user_avatar_attr', $avatar_attr); // @filters
+							if(isset($avatar_attr['attrs'])) {
+								foreach ( $avatar_attr['attrs'] as $k=>$v)
+									$new_attrs .= ' '.$k.'="'.$v.'"';  
 							}
 							
+							$target4a = apply_filters('juiz_ltw_target_attr', '_self'); // @filters
+
+							$html_avatar = '<span class="user_avatar" aria-hidden="'.$avatar_attr['aria-hidden'].'">
+												<a href="'. $avatar_attr['href'] .'" title="' . $avatar_attr['title'] . '" target="'.$target4a.'">
+													<img src="'. $avatar_attr['src'] .'" alt="'. $avatar_attr['alt'] .'" width="'.$avatar_attr['width'].'" height="'.$avatar_attr['height'].'"'.$new_attrs.' />
+												</a>
+											</span>';
 						}
-						// end of big backup control
+							
+						$html_avatar = apply_filters('juiz_ltw_user_avatar', $html_avatar); // @filters
 
-					} // end of "if API 1.1" (array) or "API 1.0" (feed)
-
-
-					// if one of the rss is readable
-					// or if API 1.1 has something returned
-					if ( $the_best_feed OR $is_api_1_1 ) {
-
-						$rss_i = $is_api_1_1 ? $api_1_1_content : $sf_rss -> get_items(0, $max_i);
+						// followers	
+						$user_followers = $rss_i[0] -> user -> followers_count;
 
 						$i = 0;
-
 						foreach ( $rss_i as $tweet ) {
-							
-							$author = $i_source = $avatar = $html_avatar = $new_attrs = '';
-
 							$i++;
-
-							$i_title = $is_api_1_1 ? jltw_format_tweettext($tweet -> text, $username) : jltw_format_tweettext($tweet -> get_title() , $username);
-							$i_creat = $is_api_1_1 ? jltw_format_since( $tweet -> created_at ) : jltw_format_since( $tweet -> get_date() );
-							
-							$i_guid = $is_api_1_1 ? "http://twitter.com/".$tweet -> user -> screen_name."/status/".$tweet -> id_str : $tweet -> get_link();
-
-							if ( $is_api_1_1 ) {
-								$author = $tweet -> user -> screen_name;
-							}
-							else {
-								$author_tag = $tweet -> get_item_tags('','author');
-								$author_a = $author_tag[0]['data'];
-								$author = substr($author_a, 0, stripos($author_a, "@") );
-							}
-							
-							if ( $is_api_1_1 ) {
-								$i_source = '<span class="juiz_ltw_source">'.__('via','jltw_lang').' '. jltw_format_tweetsource( $tweet -> source ) . '</span>';
-							}
-							else {
-								$source_tag = $tweet -> get_item_tags('http://api.twitter.com','source');
-								$i_source = $source_tag[0]['data'];
-								$i_source = jltw_format_tweetsource($i_source);
-								$i_source = ($i_source) ? '<span class="juiz_ltw_source">'.__('via','jltw_lang').' ' . $i_source . '</span>' : '';
-							}
-							
-							if ( $the_best_feed == false && $show_avatar ) {
-								$avatar = $tweet -> user -> profile_image_url;
-							}
-							elseif ( $the_best_feed == '1' && $show_avatar) {
-								$avatar = "http://api.twitter.com/1/users/profile_image/". $username .".xml?size=normal"; // or bigger
-							}
-							elseif ($the_best_feed == '2' && $show_avatar) {
-								$avatar_tag = $tweet->get_item_tags('http://base.google.com/ns/1.0','image_link');
-								$avatar = $avatar_tag[0]['data'];
-							}
-
-							if ($i==1 && $show_avatar && $avatar) { 
-								$avatar_attr = array(
-									'title'		 => __('Follow', 'juiz_ltw') . ' @'.$username.' ' . __('on twitter.', 'juiz_ltw'),
-									'href'		 => esc_url( 'http://twitter.com/' . $username ),
-									'src'		 => esc_url( $avatar ),
-									'alt'		 => $author,
-									'width'		 => '48',
-									'height'	 => '48',
-									'aria-hidden'=> 'true'
-								);
-								
-								$avatar_attr = apply_filters('juiz_ltw_user_avatar_attr', $avatar_attr); // @filters
-								if(isset($avatar_attr['attrs'])) {
-									foreach ( $avatar_attr['attrs'] as $k=>$v)
-										$new_attrs .= ' '.$k.'="'.$v.'"';  
-								}
-								
-								$target4a = apply_filters('juiz_ltw_target_attr', '_self'); // @filters
-
-								$html_avatar = '<span class="user_avatar" aria-hidden="'.$avatar_attr['aria-hidden'].'"><a href="'. $avatar_attr['href'] .'" title="' . $avatar_attr['title'] . '" target="'.$target4a.'"><img src="'. $avatar_attr['src'] .'" alt="'. $avatar_attr['alt'] .'" width="'.$avatar_attr['width'].'" height="'.$avatar_attr['height'].'"'.$new_attrs.' /></a></span>';
-							}
-							
-							$html_avatar = apply_filters('juiz_ltw_user_avatar', $html_avatar); // @filters
+							$i_source = '';
+							$i_title = jltw_format_tweettext($tweet -> text, $username);
+							$i_creat = jltw_format_since( $tweet -> created_at );
+							$i_guid = "http://twitter.com/".$tweet -> user -> screen_name."/status/".$tweet -> id_str;
+							$i_source = '<span class="juiz_ltw_source">'.__('via','jltw_lang').' '. jltw_format_tweetsource( $tweet -> source ) . '</span>';
 							
 							
 							//time ago filters
@@ -588,11 +504,13 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 							// action links
 							
-							$juiz_tweet_id = $is_api_1_1 ? $tweet-> id_str : preg_replace('#(((https?)://(w{3}\.)?)(?<!www)(\w+-?)*\.([a-z]{2,4})(/[a-zA-Z0-9_\?\=-]+)?(/[a-zA-Z0-9_\?\=-]+)?/([0-9]{10,}))#','$9',$i_guid);
-
+							$juiz_tweet_id = $tweet -> id_str;
 							$html_action_links = '';
+
 							if ($show_action_links) {
+
 								$target4action_links = apply_filters('juiz_ltw_target_action_links_attr', '_blank'); // @filters
+
 								$html_action_links ='<span class="juiz_action_links">
 									<a title="'.__('Reply', 'juiz_ltw').'" href="http://twitter.com/intent/tweet?in_reply_to='.$juiz_tweet_id.'" class="juiz_al_reply" rel="nofollow" target="'.$target4action_links.'">'.__('Reply', 'juiz_ltw').'</a> <span class="juiz_ltw_sep">-</span>
 									<a title="'.__('Retweet', 'juiz_ltw').'" href="http://twitter.com/intent/retweet?tweet_id='.$juiz_tweet_id.'" class="juiz_al_retweet" rel="nofollow" target="'.$target4action_links.'">'.__('Retweet', 'juiz_ltw').'</a> <span class="juiz_ltw_sep">-</span>
@@ -601,8 +519,6 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 							}
 
 							$li = apply_filters('juiz_ltw_each_item_tag', 'li'); // @filters
-
-							$hint_class = $is_api_1_1 ? ' jltw_api_1_1' : ' jltw_feed_'.$the_best_feed;
 
 							$item_pos_class = " jltw_item_alone";
 							if ($nb_tweets > 1) {
@@ -618,15 +534,16 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 										break;
 								}
 							}
-							
+
+							$remove_metadata = apply_filters('jltw_remove_metadata', false); // @filters
+							$html_avatar = $i==1 ? $html_avatar : '';
+							$metadata = $remove_metadata ? '' : '<em class="juiz_last_tweet_inner juiz_last_tweet_metadata">'.$time_ago .' '. $i_source .'</em>';
 							$html_result_temp = '
-								<'.$li.' class="juiz_last_tweet_item'.$hint_class.$item_pos_class.'">
-									'.$html_avatar.'
+								<'.$li.' class="juiz_last_tweet_item'.$item_pos_class.'">
+									'. $html_avatar .'
 									<span class="juiz_lt_content">' . $i_title . '</span>
 									<span class="juiz_last_tweet_footer_item">
-										<em class="juiz_last_tweet_inner juiz_last_tweet_metadata">  
-											'.$time_ago .' '. $i_source .'
-										</em>
+										'.$metadata.'
 										'.$html_action_links.'
 									</span>
 								</'.$li.'>
@@ -640,6 +557,14 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						// if we already have tweets, don't use error message
 						if( !$is_tweet_cached ) {
 							$html_result = '<li><em>' . $html_result . ' '.apply_filters('juiz_ltw_twitter_feed_not_loadable',__('The RSS feed for this twitter account is not loadable for the moment.', 'juiz_ltw')).'</em></li>';
+						
+							if ( isset( $api_1_1_content->errors[0] -> code) ) {
+								echo '<!-- JLTW Twitter API 1.1 error code : '. $api_1_1_content->errors[0] -> code . ' ('. $api_1_1_content->errors[0] -> message . ')-->';
+							}
+							else {
+								echo '<!-- JLTW Twitter API 1.1 error - No error code... -->';
+							}
+
 						}
 					}
 					
@@ -648,27 +573,30 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					update_option( $jltw_timer_option , (time() + intval( $cache_delay )));
 					
 				} // end of "if need update"
-
-				
+				else {
+					// tips for debug
+					$html_result = preg_replace('#juiz_last_tweet_item#','jltw_cached_'.$cache_delay.'s juiz_last_tweet_item' , $html_result);
+				}
 				// at the end, return html content
 				return $html_result;
 			}
 		}
 			
 			$ul = apply_filters('juiz_ltw_list_container_tag', 'ul'); // @filters
-			
-			// display the widget front content (but not immediatly because of cache system)
-			$juiz_ltw_all_tweets= '
-				<div'.$data_delay.' class="juiz_last_tweet_inside'.$need_auto_slide_class.'">
-					<'.$ul.' class="juiz_last_tweet_tweetlist">
-						'. jltw_get_the_user_timeline($the_username, $the_nb_tweet, $show_avatar, $show_action_links, $args['juiz_last_tweet_cache_duration']) .'
-					</'.$ul.'>
-					
-					<p class="juiz_last_tweet_follow_us">
+			$remove_follow_us = apply_filters('jltw_remove_follow_us_line', false); // @filters
+			$follow_us = $remove_follow_us ? '' : '<p class="juiz_last_tweet_follow_us">
 						<span class="juiz_ltw_follow">' . __('Follow', 'juiz_ltw') . '</span>
 						<a class="juiz_ltw_username" href="' . esc_url( 'http://twitter.com/' . $the_username ) . '">@' . $the_username . '</a>
 						<span class="juiz_ltw_ontwitter">' . __('on twitter.', 'juiz_ltw') . '</span>
-					</p>
+					</p>';
+
+			// display the widget front content (but not immediatly because of cache system)
+			$juiz_ltw_all_tweets= '
+				<div'.$data_delay.' class="juiz_last_tweet_inside'.$need_auto_slide_class.' juiz_ltw_user_'.$the_username.'">
+					<'.$ul.' class="juiz_last_tweet_tweetlist">
+						'. jltw_get_the_user_timeline($the_username, $the_nb_tweet, $show_avatar, $show_action_links, $args['juiz_last_tweet_cache_duration']) .'
+					</'.$ul.'>
+					'.$follow_us.'
 				</div>
 			';
 
@@ -691,8 +619,19 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
  	add_action('wp_enqueue_scripts', 'jltw_add_default_style');
  	if (!function_exists('jltw_add_default_style')) {
  		function jltw_add_default_style() {
+
  			$options = get_option( JUIZ_LTW_SETTING_NAME );
- 			if ( $options['default_styles'] ) {
+
+ 			if ( $options['default_styles'] && isset($options['css_style_version']) && intval($options['css_style_version']) == 1 ) {
+ 				wp_enqueue_style('juiz_last_tweet_widget', plugins_url(JUIZ_LTW_DIRNAME."/css/juiz_last_tweet.css", array(), JUIZ_LTW_VERSION, 'all' ));
+ 			}
+ 			elseif ( $options['default_styles'] && isset($options['css_style_version']) && intval($options['css_style_version']) == 2 ) {
+ 				wp_enqueue_style('juiz_last_tweet_widget', plugins_url(JUIZ_LTW_DIRNAME."/css/juiz_last_tweet_flat_light.css", array(), JUIZ_LTW_VERSION, 'all' ));
+ 			}
+ 			elseif ($options['default_styles'] && isset($options['css_style_version']) && intval($options['css_style_version']) == 3 ) {
+ 				wp_enqueue_style('juiz_last_tweet_widget', plugins_url(JUIZ_LTW_DIRNAME."/css/juiz_last_tweet_flat_dark.css", array(), JUIZ_LTW_VERSION, 'all' ));
+ 			}
+ 			elseif ($options['default_styles'] && !isset($options['css_style_version']) ) {
  				wp_enqueue_style('juiz_last_tweet_widget', plugins_url(JUIZ_LTW_DIRNAME."/css/juiz_last_tweet.css", array(), JUIZ_LTW_VERSION, 'all' ));
  			}
  		}
@@ -700,15 +639,17 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 
  	// custom head
 	add_action('wp_head', 'juiz_last_tweet_head');
+	
 	if( !function_exists('juiz_last_tweet_head') ) {
+		
 		function juiz_last_tweet_head() {
 
 			$juiz_last_tweet_css = '';
 			$var_sOwnCSS = '';
 			
 			$array_widgetOptions = get_option('widget_juiz_last_tweet_widget');
-			
-			if(is_array($array_widgetOptions)) {
+
+			if( is_array($array_widgetOptions) ) {
 				foreach($array_widgetOptions as $key => $value) {
 					if($value['juiz_last_tweet_own_css'])
 						$var_sOwnCSS = $value['juiz_last_tweet_own_css'];
@@ -724,11 +665,48 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 					';
 				}
 			}
+			
+			$general_plugin_options = get_option( JUIZ_LTW_SETTING_NAME );
+
+			if ( is_array($general_plugin_options) ) {
+
+				$regexp = '#\#[a-fA-F0-9]{3}#';
+				// links color
+				if ( isset( $general_plugin_options['links_colors'] ) ) {
+					
+					$juiz_last_tweet_css .= '<style type="text/css"><!--';
+
+					if ( isset( $general_plugin_options['links_colors']['hastag'] ) && preg_match( $regexp, $general_plugin_options['links_colors']['hastag'] )  )
+						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_hastag {color:'.$general_plugin_options['links_colors']['hastag'].';}';
+					if ( isset( $general_plugin_options['links_colors']['username'] ) && preg_match( $regexp, $general_plugin_options['links_colors']['username'] ))
+						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_tweetos {color:'.$general_plugin_options['links_colors']['username'].';}';
+					if ( isset( $general_plugin_options['links_colors']['weblink'] ) && preg_match( $regexp, $general_plugin_options['links_colors']['weblink'] ))
+						$juiz_last_tweet_css .= "\n\r".'a.juiz_last_tweet_url {color:'.$general_plugin_options['links_colors']['weblink'].';}';
+
+					$juiz_last_tweet_css .= "\n\r".'--></style>';
+				}
+
+				// flat bg color
+				if ( $general_plugin_options['default_styles'] && isset($general_plugin_options['css_style_version']) && intval($general_plugin_options['css_style_version']) > 1 &&  intval($general_plugin_options['css_style_version']) <=3 ) {
+
+					$juiz_last_tweet_css .= '<style type="text/css"><!--';
+
+					if ( isset( $general_plugin_options['flat_design_bgcolor'] ) && preg_match( $regexp, $general_plugin_options['flat_design_bgcolor'] )  )
+						$juiz_last_tweet_css .= "\n\r".'.juiz_last_tweet_inside {background-color:'.$general_plugin_options['flat_design_bgcolor'].';}';
+
+					$juiz_last_tweet_css .= "\n\r".'--></style>';
+
+				}
+			}
+
 			echo $juiz_last_tweet_css;
 		}
 	}
+
 	// custom footer
+	
 	add_action('wp_footer', 'juiz_last_tweet_footer');
+
 	if( !function_exists('juiz_last_tweet_footer') ) {
 		function juiz_last_tweet_footer() {
 			$var_custom_juiz_scripts = "\n\n".'<!-- No script for Juiz Last Tweet Widget :) -->'."\n\n";

@@ -1,10 +1,10 @@
 ﻿=== Juiz Last Tweet Widget ===
 Contributors: CreativeJuiz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Tags: twitter, widget, social, sidebar, last, tweet, shortcode
+Tags: twitter, widget, social, sidebar, last, tweet, shortcode, customization, flat
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 
 Add a widget to your sidebar to show your latest tweet(s) with style and without JavaScript! Retweet, Favorite and Reply links are available.
 
@@ -25,6 +25,7 @@ In admin:
 * Panel for easy configuration (Appearance -> Widgets).
 * Show or hide your avatar
 * Default CSS can be disabled or customized
+* Unlimited customization (colors of the widget, several default styles, etc.)
 * Adjustable period for cache system
 * Can active the action links
 * Can active an auto slideshow script and chose delay between two tweets
@@ -34,6 +35,7 @@ In admin:
 In your site:
 
 * Smart default style (CSS) and compatible with [Social Subscribers Counter](http://wordpress.org/extend/plugins/social-subscribers-counter/) styles
+* Flat styles with customizable colors
 * Display link (with special CSS classes) for hastags, users, and web link (`nofollow` links)
 * Display twitter's user link and statut's link
 * Display source (web, Tweetdeck, etc.) when it's possible
@@ -53,6 +55,7 @@ For developpers, numerous hooks are available, template function is available (s
 * Nowegian (thanks to [Nilsel](http://wordpress.org/support/profile/nilsel "His WordPress profile")!)
 * Italian (thanks to [superciccio14](http://wordpress.org/support/profile/superciccio14 "His WordPress profile")!)
 * Portuguese (Brazilian) (thanks to [trindademeier](http://wordpress.org/support/profile/trindademeier "His WordPress profile")!)
+* Dutch (thanks to [Jan Willem Wilmsen](http://www.directic.nl  "His Web site")!)
 
 
 Thanks to <a href="http://screenfeed.fr">Greg</a> and <a href="http://tweetpress.fr/">Julien</a> for your advices in some parts of this plugin ;)
@@ -76,7 +79,8 @@ Dans l'administration :
 * Facile à installer.
 * Panneau facile à configurer (Apparence -> Widgets).
 * Affichez ou cachez votre avatar
-* Styles par défaut personnalisable (peuvent être simplement désactivé ou écrasés)
+* Styles par défaut personnalisables (peuvent être simplement désactivé ou écrasés)
+* Personnalisation illimitée (couleurs du widget, plusieurs styles par défaut, etc.)
 * Durée du cache ajustable
 * Possibilité d'activer les liens d'action
 * Possibilité d'activer un diaporama et d'en choisir le delai entre deux tweets
@@ -86,6 +90,7 @@ Dans l'administration :
 Dans votre site :
 
 * Styles par défaut sobres et classes (CSS) et compatible avec les styles de [Social Subscribers Counter](http://wordpress.org/extend/plugins/social-subscribers-counter/)
+* Design version "Flat" avec couleurs personnalisables
 * Affiche les liens (avec des classes spéciales) pour les hastags, utilisateurs, et liens classiques (liens en `nofollow`)
 * Affiche un lien vers le statut et le compte twitter
 * Affiche la source du tweet (web, Tweetdeck, etc.) quand c'est possible
@@ -104,7 +109,8 @@ Pour les développeurs, de nombreux hooks sont disponibles ainsi qu'une fonction
 * Turc (merci à [Hakaner](http://hakanertr.wordpress.com/ "Son site web") !)
 * Norvégien (merci à [Nilsel](http://wordpress.org/support/profile/nilsel "Son profil WordPress") !)
 * Italien (merci à [superciccio14](http://wordpress.org/support/profile/superciccio14 "Son profil WordPress") !)
-* Portugais (Brésilien) (merci à [trindademeier](http://wordpress.org/support/profile/trindademeier "His WordPress profile")
+* Portugais (Brésilien) (merci à [trindademeier](http://wordpress.org/support/profile/trindademeier "Son profil WordPress")
+* Néerlandais (merci à [Jan Willem Wilmsen](http://www.directic.nl  "Son site web")!)
 
 Merci à <a href="http://screenfeed.fr">Greg</a> et <a href="http://tweetpress.fr/">Julien</a> pour vos conseils dans certaines parties du code de ce plugin ;)
 
@@ -130,10 +136,11 @@ You can use one of the both method :
 3. Juiz Last Tweet with avatar displayed and custom CSS
 4. Juiz Last Tweet with avatar and action links displayed
 5. The new admin page for 1.2.0 (translators are welcome :p)
+6. The new color picker feature!
 
 == Frequently Asked Questions ==
 
-Full documentation in the plugin folder ! (documentation.html)
+Full documentation in the plugin folder! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
 
 = The Twitter Bird image doesn't appear! What's happened? =
@@ -144,22 +151,6 @@ Sorry, I don't know. Try to uninstall/install the plugin or just pick up the ima
 First: do you have the latest version of this plugin?
 Second: did you find the settings page, create your Twitter plugin?
 
-Then, if it's ok the both previous step:
-Try to visit the link : `http://search.twitter.com/search.rss?q=from%3AUSERNAME&rpp=4` by replacing "USERNAME" with your own username.
-If nothing happens, try with : `http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=USERNAME&count=4`
-If nothing happens, it's the fault of Twitter API limitation.
-If this link show your 2 last tweets, it's the fault of my script, so contact me.
-
-Since the v1.1.3 of this plugin, this kind of error **should** only arrive the first time you activate it, if your Twitter flow is not accessible.
-
-= Why the widget shows me less tweets than I ask it to show me ? =
-
-Twitter do what it wants to do with its feeds of tweets. This plugin uses both of feeds and controls the two to know which is available. The first available is chosen. If the chosen feed don't have tweets enought (example: 2 tweets whereas you chose 4 tweets to display) the selected stream will not allow you to display all your tweets you want.
-
-You can try to solve a part of the problem by switching two variables in my code (see `wp-content/plugins/juiz-last-tweet-widget/juiz-last-tweet.php`) on lines 400 and 401. You have $search_feed1 and $search_feed2.
-Just change 1 by 2, and 2 by 1.
-
-A future update will allow you to change the feed directly from widget interface (I hope).
 
 = My tweets are not always updated =
 
@@ -169,11 +160,22 @@ Since the v1.1.3, the cache system prefers keep your old tweets instead of displ
 You can use lot of CSS classes and filters to help you in you quest :)
 See the documentation.html files inside your plugin folder !
 
-= When I use my own CSS, defaults CSS seems to disappear ? =
-Yeah, sorry, it's a bug. Please, update to 1.1.4 at least.
-
 
 == Changelog ==
+
+
+= 1.3.0 =
+* Twitter API 1.0 is no longer active (<a href="https://dev.twitter.com/blog/api-v1-retirement-date-extended-to-june-11" tagret="_blank">source</a>), this plugin only use the latest API 1.1.
+* Improvement of speed
+* Improvement of code lisibility
+* Improvement of administration's accessibility
+* Improvement of slides animations (smoothy animation)
+* New color picker to change color of links (hashtag, username, and classical links)
+* New Flat styles and color picker to customize background colors
+* New Dutch Translation (thanks to [Jan Willem Wilmsen](http://www.directic.nl  "His Web site")!)
+* New hook `jltw_remove_follow_us_line` to remove part of code (see documentation)
+* New hook `jltw_remove_metadata` to remove part of code (see documentation)
+* Remove of the option "change RSS feed" (because of the API 1.0 death)
 
 = 1.2.2 =
 * New classes in tweets list (`.jltw_item_first`, `.jltw_item_last`, `.jltw_item_alone`, `.jltw_item_[n]`)
@@ -274,6 +276,8 @@ Full documentation in the plugin folder ! (documentation.html)
 Or here: [Documentation](http://creativejuiz.fr/blog/doc/juiz-last-tweet-widget-documentation.html)
 
 == Upgrade Notice ==
+= 1.3.0 =
+Upgrade! New awesome features!
 
 = 1.1.5 =
 Update for new CSS fixes and languages support
