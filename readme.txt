@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJ
 Tags: twitter, widget, social, sidebar, last, tweet, shortcode, customization, flat
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 1.3.0
+Stable tag: 1.3.2
 
 Add a widget to your sidebar to show your latest tweet(s) with style and without JavaScript! Retweet, Favorite and Reply links are available.
 
@@ -135,8 +135,9 @@ You can use one of the both method :
 2. Juiz Last Tweet in the admin (Widget view)
 3. Juiz Last Tweet with avatar displayed and custom CSS
 4. Juiz Last Tweet with avatar and action links displayed
-5. The new admin page for 1.2.0 (translators are welcome :p)
-6. The new color picker feature!
+5. An example of custom styles
+6. The new admin page for 1.2.0 (translators are welcome :p)
+7. The new color picker feature!
 
 == Frequently Asked Questions ==
 
@@ -163,6 +164,15 @@ See the documentation.html files inside your plugin folder !
 
 == Changelog ==
 
+= 1.3.2 =
+* Translation: Update of Turkish language (thanks to [Hakaner](http://hakanertr.wordpress.com/ "His website")!)
+* Improvement: HTML5 API Visibility used for slideshow of tweets (stop the transitions if page is not visible)
+* Fix: fatal error removed (I don't know exactly when it happens) (thanks to [DaveMaison](http://wordpress.org/support/topic/bad-check-function-statement?replies=2#post-4380777))
+* Fix: Twitter oAuth Exception (declare class only if doesn't exist)
+* Fix: `the_tweets()` now really functional
+
+= 1.3.1 =
+* Improvement of custom style application
 
 = 1.3.0 =
 * Twitter API 1.0 is no longer active (<a href="https://dev.twitter.com/blog/api-v1-retirement-date-extended-to-june-11" tagret="_blank">source</a>), this plugin only use the latest API 1.1.

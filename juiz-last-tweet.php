@@ -4,7 +4,7 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/wordpress/wordpress-plugin-afficher-derniers-tweets-widget
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets) - <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Thank you!">Donate to contribute</a>
  * Author: Geoffrey Crofte
- * Version: 1.3.1
+ * Version: 1.3.2
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 define( 'JUIZ_LTW_PLUGIN_NAME',	 	'Juiz Last Tweet Widget' );
-define( 'JUIZ_LTW_VERSION', 		'1.3.1' );
+define( 'JUIZ_LTW_VERSION', 		'1.3.2' );
 define( 'JUIZ_LTW_FILE',		 	__FILE__ );
 define( 'JUIZ_LTW_DIRNAME', 		basename( dirname( __FILE__ ) ) );
 define( 'JUIZ_LTW_PLUGIN_URL',	 	plugin_dir_url( __FILE__ ));
@@ -115,7 +115,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		// action links setting
 		
 		add_filter( 'plugin_action_links_'.plugin_basename( JUIZ_LTW_FILE ), 'juiz_ltw_plugin_action_links',  10, 2);
-		if ( !function_exists(' juiz_ltw_plugin_action_links')) {
+		if ( !function_exists('juiz_ltw_plugin_action_links')) {
 			function juiz_ltw_plugin_action_links( $links, $file ) {
 				$links[] = '<a href="'.admin_url('widgets.php').'">' . __('Widgets') .'</a>';
 				$links[] = '<a href="'.JUIZ_LTW_SETTINGS_URL.'">' . __('Settings') .'</a>';
@@ -139,15 +139,15 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 	function form($instance) {
 	
 		$instance = wp_parse_args((array) $instance, array(
-			'juiz_last_tweet_title' => '',
-			'juiz_last_tweet_username' => '',
-			'juiz_last_tweet_no_tweets' => '1',
-			'juiz_last_tweet_show_avatar' => false,
-			'juiz_last_tweet_cache_duration' => 0,
-			'juiz_last_tweet_action_links' => false,
-			'juiz_last_tweet_auto_slide' => false,
-			'juiz_last_tweet_auto_slide_delay' => 0,
-			'juiz_last_tweet_own_css' => ''
+			'juiz_last_tweet_title'				=> '',
+			'juiz_last_tweet_username'			=> '',
+			'juiz_last_tweet_no_tweets'			=> '1',
+			'juiz_last_tweet_show_avatar'		=> false,
+			'juiz_last_tweet_cache_duration'	=> 0,
+			'juiz_last_tweet_action_links'		=> false,
+			'juiz_last_tweet_auto_slide'		=> false,
+			'juiz_last_tweet_auto_slide_delay'	=> 0,
+			'juiz_last_tweet_own_css'			=> ''
 		));
 		
 		$action_links_checked = $show_avatar_checked = $auto_slide_checked = ' checked="checked"';
@@ -227,27 +227,27 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		$instance = $old_instance;
 
 		$new_instance = wp_parse_args((array) $new_instance, array(
-			'juiz_last_tweet_title' => '',
-			'juiz_last_tweet_username' => '',
-			'juiz_last_tweet_no_tweets' => '1',
-			'juiz_last_tweet_show_avatar' => false,
-			'juiz_last_tweet_cache_duration' => 0,
-			'juiz_last_tweet_action_links' => false,
-			'juiz_last_tweet_auto_slide' => false,
-			'juiz_last_tweet_auto_slide_delay' => 0,
-			'juiz_last_tweet_own_css' => ''
+			'juiz_last_tweet_title'				=> '',
+			'juiz_last_tweet_username'			=> '',
+			'juiz_last_tweet_no_tweets'			=> '1',
+			'juiz_last_tweet_show_avatar'		=> false,
+			'juiz_last_tweet_cache_duration'	=> 0,
+			'juiz_last_tweet_action_links'		=> false,
+			'juiz_last_tweet_auto_slide'		=> false,
+			'juiz_last_tweet_auto_slide_delay'	=> 0,
+			'juiz_last_tweet_own_css'			=> ''
 		));
 
-		$instance['plugin-version'] = strip_tags($new_instance['juiz_last_tweet-version']);
-		$instance['juiz_last_tweet_title'] = strip_tags($new_instance['juiz_last_tweet_title']);
-		$instance['juiz_last_tweet_username'] = strip_tags($new_instance['juiz_last_tweet_username']);
-		$instance['juiz_last_tweet_no_tweets'] = strip_tags($new_instance['juiz_last_tweet_no_tweets']);
-		$instance['juiz_last_tweet_show_avatar'] = strip_tags($new_instance['juiz_last_tweet_show_avatar']);
-		$instance['juiz_last_tweet_cache_duration'] = $new_instance['juiz_last_tweet_cache_duration'];
-		$instance['juiz_last_tweet_action_links'] = $new_instance['juiz_last_tweet_action_links'];
-		$instance['juiz_last_tweet_auto_slide'] = $new_instance['juiz_last_tweet_auto_slide'];
-		$instance['juiz_last_tweet_auto_slide_delay'] = $new_instance['juiz_last_tweet_auto_slide_delay'];
-		$instance['juiz_last_tweet_own_css'] = $new_instance['juiz_last_tweet_own_css'];
+		$instance['plugin-version']						= strip_tags($new_instance['juiz_last_tweet-version']);
+		$instance['juiz_last_tweet_title']				= strip_tags($new_instance['juiz_last_tweet_title']);
+		$instance['juiz_last_tweet_username']			= strip_tags($new_instance['juiz_last_tweet_username']);
+		$instance['juiz_last_tweet_no_tweets']			= strip_tags($new_instance['juiz_last_tweet_no_tweets']);
+		$instance['juiz_last_tweet_show_avatar']		= strip_tags($new_instance['juiz_last_tweet_show_avatar']);
+		$instance['juiz_last_tweet_cache_duration']		= $new_instance['juiz_last_tweet_cache_duration'];
+		$instance['juiz_last_tweet_action_links']		= $new_instance['juiz_last_tweet_action_links'];
+		$instance['juiz_last_tweet_auto_slide']			= $new_instance['juiz_last_tweet_auto_slide'];
+		$instance['juiz_last_tweet_auto_slide_delay']	= $new_instance['juiz_last_tweet_auto_slide_delay'];
+		$instance['juiz_last_tweet_own_css']			= $new_instance['juiz_last_tweet_own_css'];
 
 		return $instance;
 	}
@@ -272,36 +272,20 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 		
 		$need_auto_slide_class = $data_delay = '';
 		
-		$the_username = $args['juiz_last_tweet_username'];
-		$the_username = preg_replace('#^@(.+)#', '$1', $the_username);
-		$the_nb_tweet = $args['juiz_last_tweet_no_tweets'];
-		$need_cache = ($args['juiz_last_tweet_cache_duration']!='0') ? true : false;
-		$show_avatar = ($args['juiz_last_tweet_show_avatar']) ? true : false;
-		$show_action_links = ($args['juiz_last_tweet_action_links']) ? true : false;
+		$the_username		= $args['juiz_last_tweet_username'];
+		$the_username		= preg_replace('#^@(.+)#', '$1', $the_username);
+		$the_nb_tweet		= $args['juiz_last_tweet_no_tweets'];
+		$need_cache			= ($args['juiz_last_tweet_cache_duration']!='0') ? true : false;
+		$show_avatar		= ($args['juiz_last_tweet_show_avatar']) ? true : false;
+		$show_action_links	= ($args['juiz_last_tweet_action_links']) ? true : false;
 		
 
 		if ( $the_nb_tweet > 1 ) {
 			$need_auto_slide_class = ($args['juiz_last_tweet_auto_slide']) ? ' juiz_ltw_autoslide' : '';
-			if($args['juiz_last_tweet_auto_slide'])
+			if($args['juiz_last_tweet_auto_slide']) {
 				$data_delay = (intval($args['juiz_last_tweet_auto_slide_delay']) == 0) ? ' data-delay="7"' : ' data-delay="'.$args['juiz_last_tweet_auto_slide_delay'].'"';
-		}
-
-
-		
-		/*
-		 * change the default feed cache recreation period
-		 */
-		 
-		/*
-		//comment for the moment, maybe next step will be a definitive removing
-		if ( !function_exists ('juiz_ltw_filter_handler') ) {
-			function juiz_ltw_filter_handler ( $seconds ) {
-				return intval(60); //seconds
 			}
 		}
-		add_filter( 'wp_feed_cache_transient_lifetime' , 'juiz_ltw_filter_handler' ); 
-		*/
-
 		
 		 
 		if ( !function_exists('jltw_format_since')) {
@@ -435,7 +419,6 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					 */
 
 
-
 					// if connection is ok
 					if ( is_array( $api_1_1_content ) AND isset( $api_1_1_content[0] -> id ) ) {
 
@@ -480,11 +463,11 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						$i = 0;
 						foreach ( $rss_i as $tweet ) {
 							$i++;
-							$i_source = '';
-							$i_title = jltw_format_tweettext($tweet -> text, $username);
-							$i_creat = jltw_format_since( $tweet -> created_at );
-							$i_guid = "http://twitter.com/".$tweet -> user -> screen_name."/status/".$tweet -> id_str;
-							$i_source = '<span class="juiz_ltw_source">'.__('via','jltw_lang').' '. jltw_format_tweetsource( $tweet -> source ) . '</span>';
+							$i_source	= '';
+							$i_title	= jltw_format_tweettext($tweet -> text, $username);
+							$i_creat	= jltw_format_since( $tweet -> created_at );
+							$i_guid		= "http://twitter.com/".$tweet -> user -> screen_name."/status/".$tweet -> id_str;
+							$i_source	= '<span class="juiz_ltw_source">'.__('via','jltw_lang').' '. jltw_format_tweetsource( $tweet -> source ) . '</span>';
 							
 							
 							//time ago filters
@@ -765,19 +748,19 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 			
 			ob_start();
 			the_widget($widget_name, $instance, array(
-				'widget_id'=>'arbitrary-instance-'.$jltw_id,
-				'before_widget' => '',
-				'after_widget' => '',
-				'before_title' => '',
-				'after_title' => ''
+				'widget_id'		=> 'arbitrary-instance-'.$jltw_id,
+				'before_widget'	=> '',
+				'after_widget'	=> '',
+				'before_title'	=> '',
+				'after_title'	=> ''
 			));
 			$output = ob_get_contents();
 			ob_end_clean();
 			$jltw_id++;
 			return $output;
 		}
-		add_shortcode('jltw','sc_4_jltw');
-		add_shortcode('tweets','sc_4_jltw');
+		add_shortcode( 'jltw','sc_4_jltw' );
+		add_shortcode( 'tweets','sc_4_jltw' );
 	}
  
 	if( !function_exists('get_the_tweets') ) {
@@ -787,8 +770,8 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 			}
 		}
 	}
-	if( !function_exists('get_the_tweets') ) {
-		function get_the_tweets( $args ) {
+	if( !function_exists('the_tweets') ) {
+		function the_tweets( $args ) {
 			if( !function_exists('get_jltw') ) {
 				echo get_jltw( $args );
 			}
@@ -815,4 +798,3 @@ add_action('widgets_init', create_function('', 'return register_widget("Juiz_Las
 	}
 	
 }
-?>

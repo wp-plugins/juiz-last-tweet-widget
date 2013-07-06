@@ -1,10 +1,9 @@
 <?php
-// vim: foldmethod=marker
-
-/* Generic exception class
- */
-class OAuthException extends Exception {
-  // pass
+/* Generic exception class */
+if ( !class_exists('OAuthException')) {
+  class OAuthException extends Exception {
+    // pass
+  }
 }
 
 class OAuthConsumer {

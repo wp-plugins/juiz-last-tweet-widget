@@ -1,16 +1,71 @@
 ;
-jQuery(document).ready(function($){
+jQuery(document).ready(function($) {
+
+	/* 
+		visibility API 
+	*/
+
+	var hidden, visibilityChange;
+
+	// The var hidden is the name of document property
+	// The var visibilityChange is the name of the event
+	// The var visibilityState is the state property
+
+	if (typeof document.hidden !== "undefined") {
+		hidden = "hidden";
+		visibilityChange = "visibilitychange";
+		visibilityState = "visibilityState";
+	} 
+	else if (typeof document.mozHidden !== "undefined") {
+		hidden = "mozHidden";
+		visibilityChange = "mozvisibilitychange";
+		visibilityState = "mozVisibilityState";
+	} else if (typeof document.msHidden !== "undefined") {
+		hidden = "msHidden";
+		visibilityChange = "msvisibilitychange";
+		visibilityState = "msVisibilityState";
+	} else if (typeof document.webkitHidden !== "undefined") {
+		hidden = "webkitHidden";
+		visibilityChange = "webkitvisibilitychange";
+		visibilityState = "webkitVisibilityState";
+	}
 
 	if( $('.juiz_ltw_autoslide').length > 0 ) {
 	
 		$('.juiz_ltw_autoslide').each(function(){
 		
+			// some vars
 			var $parent = $(this);
 			var $tweets = $parent.find('li');
 			var $first_tweet = $tweets.filter(':first');
 			var ltw_the_delay = $parent.data('delay');
 			var the_speed = 300;
 			var ltw_interval;
+
+
+			// some functions
+
+			function createAutoSlide() {
+				if(!ltw_interval)
+					ltw_interval = setInterval(juiz_ltw_next_one, ltw_the_delay*1000);
+			}
+			function removeAutoSlide() {
+				clearInterval(ltw_interval);
+				ltw_interval = false;
+			}
+			// visibility API
+			document.addEventListener(visibilityChange, checkVisibility, false);
+			function checkVisibility() {
+				//document[hidden] // true or false
+				//document[visibilityState] // visible or hidden
+				if ( document[hidden] === true ) {
+					removeAutoSlide();
+				}
+				if ( document[hidden] === false ) {
+					createAutoSlide();
+				}
+			}
+
 			
 			$('.juiz_last_tweet_tweetlist').css('width', $('.juiz_last_tweet_tweetlist').width())
 
@@ -45,15 +100,13 @@ jQuery(document).ready(function($){
 						
 				}
 				
-				ltw_interval = setInterval(juiz_ltw_next_one, ltw_the_delay*1000);
+				createAutoSlide();
 				
 				$tweets.mouseenter(function(){
-					clearInterval(ltw_interval);
-					ltw_interval = false;
+					removeAutoSlide();
 				})
 				.mouseleave(function(){
-					if(!ltw_interval)
-						ltw_interval = setInterval(juiz_ltw_next_one, ltw_the_delay*1000);
+					createAutoSlide();
 				});
 			}
 			
