@@ -69,10 +69,10 @@ function add_juiz_ltw_plugin_options() {
 	
 	add_settings_section('juiz_ltw_plugin_twitter_api', __('Twitter API 1.1 Settings','juiz_ltw'), 'juiz_ltw_section_text', JUIZ_LTW_SLUG);
 	
-	add_settings_field('juiz_ltw_twitter_user','<label for="juiz_ltw_consumer_key">'. __('Consumer Key', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_consumer_key', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
-	add_settings_field('juiz_ltw_consumer_secret','<label for="juiz_ltw_consumer_secret">'. __('Consumer Secret', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_consumer_secret', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
-	add_settings_field('juiz_ltw_oauth_token', '<label for="juiz_ltw_oauth_token">'.__('oAuth Token', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_oauth_token', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
-	add_settings_field('juiz_ltw_oauth_token_secret', '<label for="juiz_ltw_oauth_token_secret">'.__('oAuth Token Secret', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_oauth_token_secret', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
+	add_settings_field('juiz_ltw_twitter_user','<label for="juiz_ltw_consumer_key">'. __('API Key', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_consumer_key', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
+	add_settings_field('juiz_ltw_consumer_secret','<label for="juiz_ltw_consumer_secret">'. __('API Secret', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_consumer_secret', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
+	add_settings_field('juiz_ltw_oauth_token', '<label for="juiz_ltw_oauth_token">'.__('Access Token', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_oauth_token', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
+	add_settings_field('juiz_ltw_oauth_token_secret', '<label for="juiz_ltw_oauth_token_secret">'.__('Access Token Secret', 'juiz_ltw').'</label>' , 'juiz_ltw_setting_input_oauth_token_secret', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_twitter_api');
 
 	add_settings_section('juiz_ltw_plugin_general', __('General settings','juiz_ltw'), 'juiz_ltw_section_text_general', JUIZ_LTW_SLUG);
 	add_settings_field('juiz_ltw_rss_change', __('Use default appareance/styles?', 'juiz_ltw'), 'juiz_ltw_setting_radio_default_style', JUIZ_LTW_SLUG, 'juiz_ltw_plugin_general');
@@ -121,7 +121,7 @@ function juiz_ltw_section_text() {
 	echo '<ol class="juiz_ltw_section_intro juiz_next_help">';
 	echo '<li>'.sprintf(__('Go to the %sTwitter Developer Center%s to create an app, and create an account if necessary (you can use your Twitter account)','juiz_ltw'),'<a href="https://dev.twitter.com/apps/new" target="_blank">','</a>').'</li>';
 	echo '<li>'.__('Give it a name, description and website, at least, and validate','juiz_ltw').'</li>';
-	echo '<li>'.__('In the next page, find the 4 informations (consumer key, consumer secret, oauth token and oauth token secret).','juiz_ltw').'</li>';
+	echo '<li>'.__('In the next page, find the 4 informations (API key, API secret, Access token and Access token secret).','juiz_ltw').'</li>';
 	echo '<li>'.__('Write them in the fields below (they are big strings of characters).','juiz_ltw').'</li>';
 	echo '</ol>';
 }

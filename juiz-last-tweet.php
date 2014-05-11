@@ -4,7 +4,7 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/wordpress/wordpress-plugin-afficher-derniers-tweets-widget
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets) - <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Thank you!">Donate to contribute</a>
  * Author: Geoffrey Crofte
- * Version: 1.3.2
+ * Version: 1.3.3
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 define( 'JUIZ_LTW_PLUGIN_NAME',	 	'Juiz Last Tweet Widget' );
-define( 'JUIZ_LTW_VERSION', 		'1.3.2' );
+define( 'JUIZ_LTW_VERSION', 		'1.3.3' );
 define( 'JUIZ_LTW_FILE',		 	__FILE__ );
 define( 'JUIZ_LTW_DIRNAME', 		basename( dirname( __FILE__ ) ) );
 define( 'JUIZ_LTW_PLUGIN_URL',	 	plugin_dir_url( __FILE__ ));
@@ -97,6 +97,11 @@ function juiz_ltw_admin_notices(){
 				<h3>'.__("Don't worry!",'juiz_ltw').'</h3>
 				<p>'.sprintf(__('But you need to %scomplete the %sJuiz Last Tweet Widget%s options page%s if you want to display your latest tweets.','juiz_ltw'), '<a href="'.JUIZ_LTW_SETTINGS_URL.'">', '<strong>', '</strong>','</a>').'</p>
 			</div>';
+		}
+		if( !function_exists('curl_init')) {
+			echo '<div class="error"><p>';
+			echo sprintf(__('This plugin use the %scurl_init()%s function, but your PHP configuration doesn\'t allow it. You need to activate this feature to use this plugin. Thank you.','juiz_ltw'), '<code>', '</code>');
+			echo '</p></div>';
 		}
 	}
 }
@@ -396,7 +401,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					$is_api_1_1 = $the_best_feed = false;
 
 					// new API 1.1
-					if ( !class_exists('TwitterOAuth')) {
+					if ( !class_exists('TwitterOAuth') && function_exists('curl_init')) {
 						require_once ('inc/twitteroauth.php');
 					}
 					
@@ -580,8 +585,9 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						'. jltw_get_the_user_timeline($the_username, $the_nb_tweet, $show_avatar, $show_action_links, $args['juiz_last_tweet_cache_duration']) .'
 					</'.$ul.'>
 					'.$follow_us.'
-				</div>
-			';
+				</div>'.
+    			apply_filters('juiz_ltw_content_inside', '')
+			;
 
 			// if JS slider is needed by widget
 			if($need_auto_slide_class!='')

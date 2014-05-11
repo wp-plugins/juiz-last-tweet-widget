@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Juiz Last Tweet Widget\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-27 00:28+0100\n"
+"POT-Creation-Date: 2014-05-11 14:14+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Geoffrey <rikuasakura@hotmail.fr>\n"
 "Language-Team: Creative Juiz <support@creativejuiz.com>\n"
@@ -16,211 +16,8 @@ msgstr ""
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-Basepath: ../\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-SearchPath-0: .\n"
-
-#: juiz-last-tweet.php:97
-msgid "Don't worry!"
-msgstr "Ne vous inquiétez pas&nbsp;!"
-
-#: juiz-last-tweet.php:98
-#, php-format
-msgid ""
-"But you need to %scomplete the %sJuiz Last Tweet Widget%s options page%s if "
-"you want to display your latest tweets."
-msgstr ""
-"Mais vous devez %scompléter la page d'options de %s Juiz Last Tweet Widget%s"
-"%s si vous souhaitez afficher vos derniers tweets."
-
-#: juiz-last-tweet.php:120
-msgid "Widgets"
-msgstr "Widgets"
-
-#: juiz-last-tweet.php:121
-msgid "Settings"
-msgstr "Réglages"
-
-#: juiz-last-tweet.php:131
-msgid "List you last tweet by displaying content, date, and link to follow you"
-msgstr ""
-"Listez vos derniers tweets en affichant leur contenu, date, et un lien pour "
-"vous suivre."
-
-#: juiz-last-tweet.php:136
-msgid "Juiz Last Tweet"
-msgstr "Juiz Dernier Tweet"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:172
-msgid "Title"
-msgstr "Titre"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:181
-msgid "Preferences"
-msgstr "Préférences"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:184
-msgid "Username"
-msgstr "Nom d'utilisateur"
-
-#: juiz-last-tweet.php:185
-msgid "No @, just your username"
-msgstr "Pas de @, juste votre nom d'utilisateur"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:188
-msgid "Number of tweets to show"
-msgstr "Nombre de tweets à afficher"
-
-#: juiz-last-tweet.php:189
-msgid "Just a number, between 1 and 5 for example"
-msgstr "Un simple chiffre, entre 1 et 5 par exemple"
-
-#: juiz-last-tweet.php:192
-msgid "Duration of cache"
-msgstr "Durée du cache"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:193 juiz-last-tweet.php:209 juiz-last-tweet.php:326
-msgid "Seconds"
-msgstr "secondes"
-
-#: juiz-last-tweet.php:193
-msgid ""
-"A big number save your page speed. Try to use the delay between each tweet "
-"you make. (e.g. 1800 s = 30 min)"
-msgstr ""
-"Un grand nombre sauve la vitesse de chargement de votre page. Essayez le "
-"délais moyen entre deux de vos tweets. (ex : 1800 s = 30 min)"
-
-#: juiz-last-tweet.php:196
-msgid "Show your avatar?"
-msgstr "Afficher votre avatar ?"
-
-#: juiz-last-tweet.php:197
-msgid "If it's possible, display your avatar at the top of tweets list"
-msgstr ""
-"Si c'est possible, afficher votre avatar en haut de la liste des tweets"
-
-#: juiz-last-tweet.php:200
-msgid "Show action links?"
-msgstr "Afficher les liens d'action ?"
-
-#: juiz-last-tweet.php:201
-msgid "Display action links like Retweet, Reply and Fav"
-msgstr "Afficher les liens d'action comme Retweet, Répondre et Favori"
-
-#: juiz-last-tweet.php:204
-msgid "Auto slide one by one?"
-msgstr "Diaporama de tweets ?"
-
-#: juiz-last-tweet.php:205
-msgid "Use JavaScript to activate an little slider showing tweet by tweet"
-msgstr ""
-"Utilise JavaScript pour activer un petit diaporama présentant tweet par "
-"tweet."
-
-#: juiz-last-tweet.php:208
-msgid "Delay between 2 tweets?"
-msgstr "Délai entre deux tweets"
-
-#: juiz-last-tweet.php:209
-msgid "Chose a delay if you use the auto slide feature."
-msgstr "Choisir un délai si vous utilisez la fonctionnalité de diaporama."
-
-#: juiz-last-tweet.php:215
-msgid "Manage CSS"
-msgstr "Gérer les CSS"
-
-#: juiz-last-tweet.php:217
-msgid "Your own CSS"
-msgstr "Vos propres CSS"
-
-#: juiz-last-tweet.php:217
-msgid "Write your CSS here to replace or overwrite the default CSS"
-msgstr "Écrivez votre CSS ici pour remplacer ou surcharger les CSS par défaut"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:326
-msgid "Second"
-msgstr "seconde"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:330
-msgid "Minutes"
-msgstr "minutes"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:330
-msgid "Minute"
-msgstr "minute"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:334
-msgid "Hours"
-msgstr "heures"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:334
-msgid "Hour"
-msgstr "heure"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:338
-msgid "Days"
-msgstr "jours"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:338
-msgid "Day"
-msgstr "jour"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:451 juiz-last-tweet.php:588
-msgid "Follow"
-msgstr "Suivre"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:451 juiz-last-tweet.php:590
-msgid "on twitter."
-msgstr "sur Twitter."
-
-#: juiz-last-tweet.php:487
-msgid "via"
-msgstr "via"
-
-# @ tweetview-sidebar-widget
-#: juiz-last-tweet.php:492
-msgid "Time ago"
-msgstr "Il y a"
-
-#: juiz-last-tweet.php:494
-msgid "See the status"
-msgstr "Voir le statut"
-
-#: juiz-last-tweet.php:515
-msgid "Reply"
-msgstr "Répondre"
-
-#: juiz-last-tweet.php:516
-msgid "Retweet"
-msgstr "Retweeter"
-
-#: juiz-last-tweet.php:517
-msgid "Favorite"
-msgstr "Favori"
-
-#: juiz-last-tweet.php:559
-msgid "The RSS feed for this twitter account is not loadable for the moment."
-msgstr ""
-"Le flux RSS de ce compte twitter ne semble pas disponible pour le moment."
-
-#: juiz-last-tweet.php:760
-#, php-format
-msgid "%s: Widget class not found."
-msgstr "%s: La classe du Widget est introuvable."
 
 #: admin/jltw-admin.inc.php:13 admin/jltw-admin.inc.php:14
 msgid "Last Tweet Widget"
@@ -231,20 +28,20 @@ msgid "Twitter API 1.1 Settings"
 msgstr "Réglages de l'API Twitter 1.1"
 
 #: admin/jltw-admin.inc.php:72
-msgid "Consumer Key"
-msgstr "Consumer Key"
+msgid "API Key"
+msgstr "API Key"
 
 #: admin/jltw-admin.inc.php:73
-msgid "Consumer Secret"
-msgstr "Consumer Secret"
+msgid "API Secret"
+msgstr "API Secret"
 
 #: admin/jltw-admin.inc.php:74
-msgid "oAuth Token"
-msgstr "oAuth Token"
+msgid "Access Token"
+msgstr "Access Token"
 
 #: admin/jltw-admin.inc.php:75
-msgid "oAuth Token Secret"
-msgstr "oAuth Token Secret"
+msgid "Access Token Secret"
+msgstr "Access Token Secret"
 
 #: admin/jltw-admin.inc.php:77
 msgid "General settings"
@@ -312,11 +109,11 @@ msgstr ""
 
 #: admin/jltw-admin.inc.php:124
 msgid ""
-"In the next page, find the 4 informations (consumer key, consumer secret, "
-"oauth token and oauth token secret)."
+"In the next page, find the 4 informations (API key, API secret, Access token "
+"and Access token secret)."
 msgstr ""
-"Sur la page suivante, trouver les 4 informations (consumer key, consumer "
-"secret, oauth token and oauth token secret)."
+"Sur la page suivante, trouver les 4 informations (API  key, API secret, "
+"Access token and Access token secret)."
 
 #: admin/jltw-admin.inc.php:125
 msgid "Write them in the fields below (they are big strings of characters)."
@@ -422,6 +219,226 @@ msgstr "Notez-le"
 #: admin/jltw-admin.inc.php:325
 msgid "Documentation"
 msgstr "Documentation"
+
+#: juiz-last-tweet.php:97
+msgid "Don't worry!"
+msgstr "Ne vous inquiétez pas&nbsp;!"
+
+#: juiz-last-tweet.php:98
+#, php-format
+msgid ""
+"But you need to %scomplete the %sJuiz Last Tweet Widget%s options page%s if "
+"you want to display your latest tweets."
+msgstr ""
+"Mais vous devez %scompléter la page d'options de %s Juiz Last Tweet Widget%s"
+"%s si vous souhaitez afficher vos derniers tweets."
+
+#: juiz-last-tweet.php:103
+#, php-format
+msgid ""
+"This plugin use the %scurl_init()%s function, but your PHP configuration "
+"doesn't allow it. You need to activate this feature to use this plugin. "
+"Thank you."
+msgstr ""
+"Ce plugin utilise la fonction PHP %scurl_init()%s, mais votre configuration "
+"PHP ne l'autorise pas. Vous devez activer cette fonctionnalités si vous "
+"souhaitez utiliser Juiz Last Tweet Widget."
+
+#: juiz-last-tweet.php:125
+msgid "Widgets"
+msgstr "Widgets"
+
+#: juiz-last-tweet.php:126
+msgid "Settings"
+msgstr "Réglages"
+
+#: juiz-last-tweet.php:136
+msgid "List you last tweet by displaying content, date, and link to follow you"
+msgstr ""
+"Listez vos derniers tweets en affichant leur contenu, date, et un lien pour "
+"vous suivre."
+
+#: juiz-last-tweet.php:141
+msgid "Juiz Last Tweet"
+msgstr "Juiz Dernier Tweet"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:177
+msgid "Title"
+msgstr "Titre"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:186
+msgid "Preferences"
+msgstr "Préférences"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:189
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: juiz-last-tweet.php:190
+msgid "No @, just your username"
+msgstr "Pas de @, juste votre nom d'utilisateur"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:193
+msgid "Number of tweets to show"
+msgstr "Nombre de tweets à afficher"
+
+#: juiz-last-tweet.php:194
+msgid "Just a number, between 1 and 5 for example"
+msgstr "Un simple chiffre, entre 1 et 5 par exemple"
+
+#: juiz-last-tweet.php:197
+msgid "Duration of cache"
+msgstr "Durée du cache"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:198 juiz-last-tweet.php:214 juiz-last-tweet.php:315
+msgid "Seconds"
+msgstr "secondes"
+
+#: juiz-last-tweet.php:198
+msgid ""
+"A big number save your page speed. Try to use the delay between each tweet "
+"you make. (e.g. 1800 s = 30 min)"
+msgstr ""
+"Un grand nombre sauve la vitesse de chargement de votre page. Essayez le "
+"délais moyen entre deux de vos tweets. (ex : 1800 s = 30 min)"
+
+#: juiz-last-tweet.php:201
+msgid "Show your avatar?"
+msgstr "Afficher votre avatar ?"
+
+#: juiz-last-tweet.php:202
+msgid "If it's possible, display your avatar at the top of tweets list"
+msgstr ""
+"Si c'est possible, afficher votre avatar en haut de la liste des tweets"
+
+#: juiz-last-tweet.php:205
+msgid "Show action links?"
+msgstr "Afficher les liens d'action ?"
+
+#: juiz-last-tweet.php:206
+msgid "Display action links like Retweet, Reply and Fav"
+msgstr "Afficher les liens d'action comme Retweet, Répondre et Favori"
+
+#: juiz-last-tweet.php:209
+msgid "Auto slide one by one?"
+msgstr "Diaporama de tweets ?"
+
+#: juiz-last-tweet.php:210
+msgid "Use JavaScript to activate an little slider showing tweet by tweet"
+msgstr ""
+"Utilise JavaScript pour activer un petit diaporama présentant tweet par "
+"tweet."
+
+#: juiz-last-tweet.php:213
+msgid "Delay between 2 tweets?"
+msgstr "Délai entre deux tweets"
+
+#: juiz-last-tweet.php:214
+msgid "Chose a delay if you use the auto slide feature."
+msgstr "Choisir un délai si vous utilisez la fonctionnalité de diaporama."
+
+#: juiz-last-tweet.php:220
+msgid "Manage CSS"
+msgstr "Gérer les CSS"
+
+#: juiz-last-tweet.php:222
+msgid "Your own CSS"
+msgstr "Vos propres CSS"
+
+#: juiz-last-tweet.php:222
+msgid "Write your CSS here to replace or overwrite the default CSS"
+msgstr "Écrivez votre CSS ici pour remplacer ou surcharger les CSS par défaut"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:315
+msgid "Second"
+msgstr "seconde"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:319
+msgid "Minutes"
+msgstr "minutes"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:319
+msgid "Minute"
+msgstr "minute"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:323
+msgid "Hours"
+msgstr "heures"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:323
+msgid "Hour"
+msgstr "heure"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:327
+msgid "Days"
+msgstr "jours"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:327
+msgid "Day"
+msgstr "jour"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:439 juiz-last-tweet.php:576
+msgid "Follow"
+msgstr "Suivre"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:439 juiz-last-tweet.php:578
+msgid "on twitter."
+msgstr "sur Twitter."
+
+#: juiz-last-tweet.php:475
+msgid "via"
+msgstr "via"
+
+# @ tweetview-sidebar-widget
+#: juiz-last-tweet.php:480
+msgid "Time ago"
+msgstr "Il y a"
+
+#: juiz-last-tweet.php:482
+msgid "See the status"
+msgstr "Voir le statut"
+
+#: juiz-last-tweet.php:503
+msgid "Reply"
+msgstr "Répondre"
+
+#: juiz-last-tweet.php:504
+msgid "Retweet"
+msgstr "Retweeter"
+
+#: juiz-last-tweet.php:505
+msgid "Favorite"
+msgstr "Favori"
+
+#: juiz-last-tweet.php:547
+msgid "The RSS feed for this twitter account is not loadable for the moment."
+msgstr ""
+"Le flux RSS de ce compte twitter ne semble pas disponible pour le moment."
+
+#: juiz-last-tweet.php:749
+#, php-format
+msgid "%s: Widget class not found."
+msgstr "%s: La classe du Widget est introuvable."
+
+#~ msgid "Consumer Key"
+#~ msgstr "Consumer Key"
+
+#~ msgid "Consumer Secret"
+#~ msgstr "Consumer Secret"
 
 #~ msgid "Twitter has a problem with your RSS feed&hellip;"
 #~ msgstr "Twitter a un problème avec votre flux RSS&hellip;"
