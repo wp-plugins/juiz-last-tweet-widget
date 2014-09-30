@@ -207,6 +207,17 @@ class TwitterOAuth {
     curl_setopt($ci, CURLOPT_HEADERFUNCTION, array($this, 'getHeader'));
     curl_setopt($ci, CURLOPT_HEADER, FALSE);
 
+    // Set the proxy
+    // (thanks to http://wordpress.org/support/topic/http-proxy-make-widget-work-if-youre-behind-a-http-proxy?replies=2#post-5591344)
+    if (defined('WP_PROXY_HOST') && defined('WP_PROXY_PORT')) {
+      curl_setopt($ci, CURLOPT_PROXY, WP_PROXY_HOST.':'.WP_PROXY_PORT);
+    }
+    // If there is also authentication required
+    if (defined('WP_PROXY_USERNAME') && defined('WP_PROXY_PASSWORD')) {
+      curl_setopt($ci, CURLOPT_PROXYUSERPWD,
+                       WP_PROXY_USERNAME.':'.WP_PROXY_PASSWORD);
+    }
+
     switch ($method) {
       case 'POST':
         curl_setopt($ci, CURLOPT_POST, TRUE);

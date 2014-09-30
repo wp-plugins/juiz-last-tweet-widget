@@ -4,7 +4,7 @@
  * Plugin URI: http://www.creativejuiz.fr/blog/wordpress/wordpress-plugin-afficher-derniers-tweets-widget
  * Description: Adds a widget to your blog's sidebar to show your latest tweets. (XHTML-valid - No JS used to load tweets) - <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest" title="Thank you!">Donate to contribute</a>
  * Author: Geoffrey Crofte
- * Version: 1.3.3
+ * Version: 1.3.3.7
  * Author URI: http://crofte.fr
  * License: GPLv2 or later 
  */
@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 define( 'JUIZ_LTW_PLUGIN_NAME',	 	'Juiz Last Tweet Widget' );
-define( 'JUIZ_LTW_VERSION', 		'1.3.3' );
+define( 'JUIZ_LTW_VERSION', 		'1.3.3.7' );
 define( 'JUIZ_LTW_FILE',		 	__FILE__ );
 define( 'JUIZ_LTW_DIRNAME', 		basename( dirname( __FILE__ ) ) );
 define( 'JUIZ_LTW_PLUGIN_URL',	 	plugin_dir_url( __FILE__ ));
@@ -417,21 +417,23 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 					$search_feed3 = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=".$username."&count=".intval($nb_tweets); 
 					$api_1_1_content = $connection->get($search_feed3);
 
-					
-
 					/*
 					 *	version 1.3.0 removes all mentions of API 1.0, no longer activated by Twitter.
 					 */
 
 
 					// if connection is ok
-					if ( is_array( $api_1_1_content ) AND isset( $api_1_1_content[0] -> id ) ) {
 
+					if ( is_array( $api_1_1_content ) ) {
+
+						// trouble with object or array type in Twitter API 1.1
+						$is_object = is_object($api_1_1_content[0]);
 						$rss_i = $api_1_1_content;
 
 						// avatar
-						$author = $rss_i[0] -> user -> screen_name;
-						$avatar = $rss_i[0] -> user -> profile_image_url;
+
+						$author = $is_object ? $rss_i[0] -> user -> screen_name : $rss_i[0]['user']['screen_name'];
+						$avatar = $is_object ? $rss_i[0] -> user -> profile_image_url : $rss_i[0]['user']['profile_image_url'];
 						$html_avatar = $new_attrs = '';
 
 						if ($show_avatar && $avatar) { 
@@ -463,16 +465,22 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						$html_avatar = apply_filters('juiz_ltw_user_avatar', $html_avatar); // @filters
 
 						// followers	
-						$user_followers = $rss_i[0] -> user -> followers_count;
+						$user_followers = $is_object ?  $rss_i[0] -> user -> followers_count : $rss_i[0]['user']['followers_count'];
 
 						$i = 0;
 						foreach ( $rss_i as $tweet ) {
 							$i++;
+							$tweet_text = $is_object ? $tweet -> text : $tweet['text'];
+							$tweet_creat= $is_object ? $tweet -> created_at : $tweet['created_at'];
+							$screename 	= $is_object ? $tweet -> user -> screen_name : $tweet['user']['screen_name'];
+							$id_str		= $is_object ? $tweet -> id_str : $tweet['id_str'];
+							$tweet_src	= $is_object ? $tweet -> source : $tweet['source'];
+
 							$i_source	= '';
-							$i_title	= jltw_format_tweettext($tweet -> text, $username);
-							$i_creat	= jltw_format_since( $tweet -> created_at );
-							$i_guid		= "http://twitter.com/".$tweet -> user -> screen_name."/status/".$tweet -> id_str;
-							$i_source	= '<span class="juiz_ltw_source">'.__('via','jltw_lang').' '. jltw_format_tweetsource( $tweet -> source ) . '</span>';
+							$i_title	= jltw_format_tweettext($tweet_text, $username);
+							$i_creat	= jltw_format_since( $tweet_creat );
+							$i_guid		= "http://twitter.com/".$screename."/status/".$id_str;
+							$i_source	= '<span class="juiz_ltw_source">'.__('via','jltw_lang').' '. jltw_format_tweetsource( $tweet_src ) . '</span>';
 							
 							
 							//time ago filters
@@ -492,7 +500,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 
 							// action links
 							
-							$juiz_tweet_id = $tweet -> id_str;
+							$juiz_tweet_id = $is_object ?  $tweet -> id_str : $tweet['id_str'];
 							$html_action_links = '';
 
 							if ($show_action_links) {
@@ -546,7 +554,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						if( !$is_tweet_cached ) {
 							$html_result = '<li><em>' . $html_result . ' '.apply_filters('juiz_ltw_twitter_feed_not_loadable',__('The RSS feed for this twitter account is not loadable for the moment.', 'juiz_ltw')).'</em></li>';
 						
-							if ( isset( $api_1_1_content->errors[0] -> code) ) {
+							if ( isset( $api_1_1_content -> errors[0] -> code) ) {
 								echo '<!-- JLTW Twitter API 1.1 error code : '. $api_1_1_content->errors[0] -> code . ' ('. $api_1_1_content->errors[0] -> message . ')-->';
 							}
 							else {

@@ -3,8 +3,8 @@ Contributors: CreativeJuiz
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P39NJPCWVXGDY&lc=FR&item_name=Juiz%20Last%20Tweet%20Widget%20%2d%20WordPress%20Plugin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: twitter, widget, social, sidebar, last, tweet, shortcode, customization, flat
 Requires at least: 3.0.1
-Tested up to: 3.9.1
-Stable tag: 1.3.3
+Tested up to: 4.0
+Stable tag: 1.3.3.7
 
 Add a widget to your sidebar to show your latest tweet(s) with style and without JavaScript! Retweet, Favorite and Reply links are available.
 
@@ -163,6 +163,17 @@ See the documentation.html files inside your plugin folder !
 
 
 == Changelog ==
+
+= 1.3.3.7 =
+* **WordPress 4.0 compatible**
+ * New app Icon
+* **Bug fix**
+ * Fatal error fixed thanks to [@lespacedunmatin](https://twitter.com/lespacedunmatin/status/515911814165831680)
+* **Improvement:**
+ * oAuth Notice removed
+ * The widget work for people behind a http proxy (thank you [Frank](http://wordpress.org/support/topic/http-proxy-make-widget-work-if-youre-behind-a-http-proxy?replies=2#post-5431257))
+* Fun version number, isn't it?
+
 
 = 1.3.3 =
 * WordPress 3.9.x compatible
