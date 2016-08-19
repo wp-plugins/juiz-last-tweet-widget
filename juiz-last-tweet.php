@@ -470,6 +470,15 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						$i = 0;
 						foreach ( $rss_i as $tweet ) {
 							$i++;
+							if ($tweet -> retweeted_status -> text == ''){
+							  $tweet_text = $is_object ? $tweet -> text : $tweet['text'];
+							  $i_title	= jltw_format_tweettext($tweet_text, $username);
+							}else{
+							  $tweet_text = $is_object ? $tweet -> retweeted_status -> text : $tweet['retweeted_status']['text'];
+							  $rt_tweet_user_mentions = $is_object ? $tweet-> entities -> user_mentions : $tweet['entities']['user_mentions'];
+							  $rt_tweet_screen_name = $rt_tweet_user_mentions[0] -> screen_name;
+							  $i_title	= jltw_format_tweettext('RT @' . $rt_tweet_screen_name . ': ' . $tweet_text, $username);
+							}
 							$tweet_text = $is_object ? $tweet -> text : $tweet['text'];
 							$tweet_creat= $is_object ? $tweet -> created_at : $tweet['created_at'];
 							$screename 	= $is_object ? $tweet -> user -> screen_name : $tweet['user']['screen_name'];
@@ -477,7 +486,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 							$tweet_src	= $is_object ? $tweet -> source : $tweet['source'];
 
 							$i_source	= '';
-							$i_title	= jltw_format_tweettext($tweet_text, $username);
+							//$i_title	= jltw_format_tweettext($tweet_text, $username);
 							$i_creat	= jltw_format_since( $tweet_creat );
 							$i_guid		= "http://twitter.com/".$screename."/status/".$id_str;
 							$i_source	= '<span class="juiz_ltw_source">'.__('via','jltw_lang').' '. jltw_format_tweetsource( $tweet_src ) . '</span>';
