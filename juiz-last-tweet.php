@@ -470,7 +470,7 @@ class Juiz_Last_Tweet_Widget extends WP_Widget {
 						$i = 0;
 						foreach ( $rss_i as $tweet ) {
 							$i++;
-							if ($tweet -> retweeted_status -> text == ''){
+							if (!isset($tweet -> retweeted_status)){
 							  $tweet_text = $is_object ? $tweet -> text : $tweet['text'];
 							  $i_title	= jltw_format_tweettext($tweet_text, $username);
 							}else{
